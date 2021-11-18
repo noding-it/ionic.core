@@ -3,9 +3,7 @@
   "version": "0.0.1",
   "peerDependencies": {
     "@angular/common": "^12.1.0",
-    "@angular/core": "^12.1.0"
-  },
-  "dependencies": {
+    "@angular/core": "^12.1.0",
     "@ionic-native/device": "^5.36.0",
     "@ionic-native/file": "^5.36.0",
     "@ionic-native/file-opener": "^5.36.0",
@@ -13,6 +11,7 @@
     "color": "^4.0.1",
     "file-saver": "^2.0.5",
     "moment": "^2.29.1",
+    "ng2-pdf-viewer": "^7.0.2",
     "ngx-color-picker": "^11.0.0",
     "sweetalert2": "^11.1.10",
     "tslib": "^2.2.0",

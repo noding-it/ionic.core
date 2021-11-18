@@ -4,11 +4,19 @@
 
 export * from './lib/nd-core.module';
 
+export * from './lib/directives/readmore.directive';
+export * from './lib/directives/file-drag-and-drop.directive';
+
 export * from './lib/guards/auth.guard';
 export * from './lib/guards/admin.guard';
 export * from './lib/guards/route-check.guard';
 
 export * from './lib/interceptors/request.interceptor';
+
+export * from './lib/modal/modal-base-crud.component';
+export * from './lib/modal/modal-descrizione.component';
+export * from './lib/modal/modal-preview.component';
+export * from './lib/modal/modal-search.component';
 
 export * from './lib/services/alert.service';
 export * from './lib/services/aruba.service';
