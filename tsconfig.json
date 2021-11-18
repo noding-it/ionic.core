@@ -10,6 +10,12 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
+    "paths": {
+      "nd-core": [
+        "dist/nd-core/nd-core",
+        "dist/nd-core"
+      ]
+    },
     "target": "es2015",
     "module": "es2020",
     "lib": ["es2018", "dom"]
