@@ -14,7 +14,7 @@ export class RouteCheckGuard implements CanActivate {
     ) {
     }
 
-    canActivate(
+  canActivate(
         next: ActivatedRouteSnapshot,
         state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
 

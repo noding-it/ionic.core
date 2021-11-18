@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {GlobalService} from './global.service';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {AppSettingsEnum} from '../enum/app-settings.enum';
 import * as moment from 'moment';
 
 const API_URL = 'https://api.ivaservizi.it/';
@@ -16,6 +15,12 @@ export class EdocoService {
         private _http: HttpClient,
         private _globalService: GlobalService,
     ) {
+    }
+
+    private _key: string = '';
+
+    setKey(key: string) {
+      this._key = key;
     }
 
     casherDocumentBilling(scontrino: any, payments: any[], purchasedItems: any[]): Observable<any> {
@@ -52,7 +57,7 @@ export class EdocoService {
                 taxDeductibleAmount: '0'
             },
             {
-                headers: new HttpHeaders().set('content-type', 'application/json').set('API-Key', this._globalService.getImpostazione(AppSettingsEnum.EDOCO_API_KEY))
+                headers: new HttpHeaders().set('content-type', 'application/json').set('API-Key', this._globalService.getImpostazione(15)) // AppSettingsEnum.EDOCO_API_KEY
             }
         );
     }
@@ -68,7 +73,7 @@ export class EdocoService {
                 referenceDocumentCode: documentID
             },
             {
-                headers: new HttpHeaders().set('content-type', 'application/json').set('API-Key', this._globalService.getImpostazione(AppSettingsEnum.EDOCO_API_KEY))
+                headers: new HttpHeaders().set('content-type', 'application/json').set('API-Key', this._globalService.getImpostazione(15))
             }
         );
     }
@@ -88,7 +93,7 @@ export class EdocoService {
                                 }]*/
             },
             {
-                headers: new HttpHeaders().set('content-type', 'application/json').set('API-Key', this._globalService.getImpostazione(AppSettingsEnum.EDOCO_API_KEY))
+                headers: new HttpHeaders().set('content-type', 'application/json').set('API-Key', this._globalService.getImpostazione(15))
             }
         );
     }
@@ -98,7 +103,7 @@ export class EdocoService {
         return this._http.get<any>(
             `${API_URL}shop/woocommerce/document/link/${documentID}`,
             {
-                headers: new HttpHeaders().set('content-type', 'application/json').set('API-Key', this._globalService.getImpostazione(AppSettingsEnum.EDOCO_API_KEY))
+                headers: new HttpHeaders().set('content-type', 'application/json').set('API-Key', this._globalService.getImpostazione(15))
             }
         );
     }
@@ -107,7 +112,7 @@ export class EdocoService {
         return this._http.get<any>(
             `${API_URL}shop/woocommerce/document/pdf/${documentID}?format=${format}`,
             {
-                headers: new HttpHeaders().set('content-type', 'application/json').set('API-Key', this._globalService.getImpostazione(AppSettingsEnum.EDOCO_API_KEY))
+                headers: new HttpHeaders().set('content-type', 'application/json').set('API-Key', this._globalService.getImpostazione(15))
             }
         );
     }
@@ -117,7 +122,7 @@ export class EdocoService {
             `${API_URL}shop/woocommerce/document/email/${documentID}`,
             {to},
             {
-                headers: new HttpHeaders().set('content-type', 'application/json').set('API-Key', this._globalService.getImpostazione(AppSettingsEnum.EDOCO_API_KEY))
+                headers: new HttpHeaders().set('content-type', 'application/json').set('API-Key', this._globalService.getImpostazione(15))
             }
         );
     }

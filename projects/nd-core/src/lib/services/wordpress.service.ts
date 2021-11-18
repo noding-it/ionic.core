@@ -1,8 +1,9 @@
-import {Injectable} from '@angular/core';
+import {Inject, Injectable} from '@angular/core';
 import {Observable} from 'rxjs/internal/Observable';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {catchError} from 'rxjs/operators';
 import {GlobalService} from './global.service';
+import {EnvironmentConfig} from "../interfaces/environment-config";
 
 @Injectable({
   providedIn: 'root'
@@ -10,24 +11,15 @@ import {GlobalService} from './global.service';
 export class WordpressService {
 
   constructor(
+    @Inject('CORE_ENVIRONMENT') private _viewConfig : EnvironmentConfig,
     private _http: HttpClient,
     private _gs: GlobalService,
   ) {
   }
 
-  private _apiUrl: string;
-  private _apiAuthUrl: string;
-  private _woocommerceToken: string;
-
-  public setEnvironment(apiUrl: string, apiAuthUrl: string, woocommerceToken: string) {
-    this._apiUrl = apiUrl;
-    this._apiAuthUrl = apiAuthUrl;
-    this._woocommerceToken = woocommerceToken;
-  }
-
   public login(): Observable<any> {
     return this._http.post(
-      this._apiAuthUrl,
+      this._viewConfig.environment.apiWpAuth,
       {},
       {
         headers: new HttpHeaders().set('content-type', 'application/x-www-form-urlencoded')
@@ -52,9 +44,9 @@ export class WordpressService {
 
   public getUserOrders(): Observable<any> {
     return this._http.get(
-      `${this._apiUrl}/woocommerce/anenglishisland/orders/get-by-user`,
+      `${this._viewConfig.environment.apiGateway}/woocommerce/anenglishisland/orders/get-by-user`,
       {
-        headers: new HttpHeaders().set('content-type', 'application/x-www-form-urlencoded').set('Authorization', `AEI ${localStorage.getItem('token')}`).set('Woocommerce', `${this._woocommerceToken}`)
+        headers: new HttpHeaders().set('content-type', 'application/x-www-form-urlencoded').set('Authorization', `AEI ${localStorage.getItem('token')}`).set('Woocommerce', `${this._viewConfig.environment.WOOCOMMERCE_TOKEN}`)
       }
     ).pipe(
       catchError(this._gs.errorHandler)
@@ -63,10 +55,10 @@ export class WordpressService {
 
   public createUser(params: string): Observable<any> {
     return this._http.post(
-      `${this._apiUrl}/woocommerce/user/create`,
+      `${this._viewConfig.environment.apiGateway}/woocommerce/user/create`,
       {params},
       {
-        headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', `AEI ${localStorage.getItem('token')}`).set('Woocommerce', `${this._woocommerceToken}`),
+        headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', `AEI ${localStorage.getItem('token')}`).set('Woocommerce', `${this._viewConfig.environment.WOOCOMMERCE_TOKEN}`),
       }
     ).pipe(
       catchError(this._gs.errorHandler)
@@ -76,11 +68,11 @@ export class WordpressService {
   public modifyUser(id: number, params: boolean): Observable<any> {
     console.log(id);
     return this._http.put(
-      `${this._apiUrl}/woocommerce/user/update/${id}`,
+      `${this._viewConfig.environment.apiGateway}/woocommerce/user/update/${id}`,
       {params},
       // action},
       {
-        headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', `AEI ${localStorage.getItem('token')}`).set('Woocommerce', `${this._woocommerceToken}`),
+        headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', `AEI ${localStorage.getItem('token')}`).set('Woocommerce', `${this._viewConfig.environment.WOOCOMMERCE_TOKEN}`),
       }
     ).pipe(
       catchError(this._gs.errorHandler)
@@ -89,12 +81,12 @@ export class WordpressService {
 
   public createProduct(params: string): Observable<any> {
     return this._http.post(
-      `${this._apiUrl}/woocommerce/product/create`,
+      `${this._viewConfig.environment.apiGateway}/woocommerce/product/create`,
       {
         params,
       },
       {
-        headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', `AEI ${localStorage.getItem('token')}`).set('Woocommerce', `${this._woocommerceToken}`),
+        headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', `AEI ${localStorage.getItem('token')}`).set('Woocommerce', `${this._viewConfig.environment.WOOCOMMERCE_TOKEN}`),
       }
     ).pipe(
       catchError(this._gs.errorHandler)
@@ -103,13 +95,13 @@ export class WordpressService {
 
   public updateProduct(params: string, codiceWordpress: number): Observable<any> {
     return this._http.put(
-      `${this._apiUrl}/woocommerce/product/update/${codiceWordpress}`,
+      `${this._viewConfig.environment.apiGateway}/woocommerce/product/update/${codiceWordpress}`,
       {
         params,
         codiceWordpress
       },
       {
-        headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', `AEI ${localStorage.getItem('token')}`).set('Woocommerce', `${this._woocommerceToken}`),
+        headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', `AEI ${localStorage.getItem('token')}`).set('Woocommerce', `${this._viewConfig.environment.WOOCOMMERCE_TOKEN}`),
       }
     ).pipe(
       catchError(this._gs.errorHandler)
@@ -118,9 +110,9 @@ export class WordpressService {
 
   public getProdotti(): Observable<any> {
     return this._http.get(
-      `${this._apiUrl}/woocommerce/products/get`,
+      `${this._viewConfig.environment.apiGateway}/woocommerce/products/get`,
       {
-        headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', `AEI ${localStorage.getItem('token')}`).set('Woocommerce', `${this._woocommerceToken}`),
+        headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', `AEI ${localStorage.getItem('token')}`).set('Woocommerce', `${this._viewConfig.environment.WOOCOMMERCE_TOKEN}`),
       }
     ).pipe(
       catchError(this._gs.errorHandler)
@@ -129,9 +121,9 @@ export class WordpressService {
 
   public getProdotto(codiceWordpress: number): Observable<any> {
     return this._http.get(
-      `${this._apiUrl}/woocommerce/product/get/${codiceWordpress}`,
+      `${this._viewConfig.environment.apiGateway}/woocommerce/product/get/${codiceWordpress}`,
       {
-        headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', `AEI ${localStorage.getItem('token')}`).set('Woocommerce', `${this._woocommerceToken}`),
+        headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', `AEI ${localStorage.getItem('token')}`).set('Woocommerce', `${this._viewConfig.environment.WOOCOMMERCE_TOKEN}`),
       }
     ).pipe(
       catchError(this._gs.errorHandler)
@@ -140,9 +132,9 @@ export class WordpressService {
 
   public deleteProdotto(codiceWordpress: number): Observable<any> {
     return this._http.delete(
-      `${this._apiUrl}/woocommerce/product/delete/${codiceWordpress}`,
+      `${this._viewConfig.environment.apiGateway}/woocommerce/product/delete/${codiceWordpress}`,
       {
-        headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', `AEI ${localStorage.getItem('token')}`).set('Woocommerce', `${this._woocommerceToken}`),
+        headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', `AEI ${localStorage.getItem('token')}`).set('Woocommerce', `${this._viewConfig.environment.WOOCOMMERCE_TOKEN}`),
       }
     ).pipe(
       catchError(this._gs.errorHandler)
@@ -151,12 +143,12 @@ export class WordpressService {
 
   public createOrder(params: string): Observable<any> {
     return this._http.post(
-      `${this._apiUrl}/woocommerce/order/create`,
+      `${this._viewConfig.environment.apiGateway}/woocommerce/order/create`,
       {
         params,
       },
       {
-        headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', `AEI ${localStorage.getItem('token')}`).set('Woocommerce', `${this._woocommerceToken}`),
+        headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', `AEI ${localStorage.getItem('token')}`).set('Woocommerce', `${this._viewConfig.environment.WOOCOMMERCE_TOKEN}`),
       }
     ).pipe(
       catchError(this._gs.errorHandler)

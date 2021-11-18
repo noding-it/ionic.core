@@ -1,4 +1,4 @@
-import {Injectable, isDevMode} from '@angular/core';
+import {Inject, Injectable, isDevMode} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {throwError} from 'rxjs';
 import {Observable} from 'rxjs/internal/Observable';
@@ -7,244 +7,244 @@ import {Platform} from '@ionic/angular';
 import {LoadingService} from './loading.service';
 import {Device} from '@ionic-native/device/ngx';
 import {IGatewayResponse} from '../interfaces/gateway-response';
-import {environment} from '../../../../environments/environment';
 import {AppConfig, Impostazione} from '../interfaces/app';
-import {AppSettingsEnum} from '../enum/app-settings.enum';
 import {NetworkService} from './network.service';
 import {ThemeService} from './theme.service';
 import {Sweetalert2Service} from './sweetalert2.service';
 import {Router} from '@angular/router';
+import {EnvironmentConfig} from "../interfaces/environment-config";
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class GlobalService {
 
-    constructor(
-        private _http: HttpClient,
-        public platform: Platform,
-        public loading: LoadingService,
-        public device: Device,
-        public networkService: NetworkService,
-        private _themeService: ThemeService,
-        private _sweetAlert: Sweetalert2Service,
-        private _router: Router,
-    ) {
+  constructor(
+    @Inject('CORE_ENVIRONMENT') private _viewConfig: EnvironmentConfig,
+    private _http: HttpClient,
+    public platform: Platform,
+    public loading: LoadingService,
+    public device: Device,
+    public networkService: NetworkService,
+    private _themeService: ThemeService,
+    private _sweetAlert: Sweetalert2Service,
+    private _router: Router,
+  ) {
+  }
+
+  private _isMenuOpen: boolean;
+
+  public App: AppConfig = {
+    isDevMode: isDevMode(),
+    user: undefined,
+    logged: true,
+    settings: [],
+    ruotes: [],
+    appPages: []
+  };
+
+  //////////////////////// GLOBAL FUNCTION /////////////////////////
+
+  public callGateway(process, params, loader = true, gtw = 'apiDBox', loaderDuration = 1000): Observable<IGatewayResponse> {
+    this.loading.dismiss();
+    if (loader && !this.loading.isLoading) {
+      this.loading.dismiss();
+      // this.loading.present(loaderDuration);
     }
-
-    private _isMenuOpen: boolean;
-
-    public App: AppConfig = {
-        isDevMode: isDevMode(),
-        user: undefined,
-        logged: true,
-        settings: [],
-        ruotes: [],
-        appPages: []
-    };
-
-    //////////////////////// GLOBAL FUNCTION /////////////////////////
-
-    public callGateway(process, params, loader = true, gtw = 'apiDBox', loaderDuration = 1000): Observable<IGatewayResponse> {
-        this.loading.dismiss();
-        if (loader && !this.loading.isLoading) {
-            this.loading.dismiss();
-            // this.loading.present(loaderDuration);
+    return this._http.post<IGatewayResponse>(
+      this._viewConfig.environment[gtw] + '?gest=2',
+      {
+        type: 1,
+        process,
+        params,
+        token: localStorage.getItem('token')
+      },
+      {
+        headers: new HttpHeaders().set('content-type', 'application/json').set('authorization', this._viewConfig.environment.TOKEN).set('showLoader', (loader ? '' : 'false'))
+      }
+    ).pipe(
+      tap(_ => this.loading.dismiss()),
+      catchError(this.errorHandler),
+      tap(resp => {
+        if (resp.error === 'Invalid token 4 !') {
+          if (this.logout()) {
+            window.location.reload();
+          }
+        } else if (resp.error === 'Invalid token 2 !') {
+          delete resp.error;
         }
-        return this._http.post<IGatewayResponse>(
-            environment[gtw] + '?gest=2',
-            {
-                type: 1,
-                process,
-                params,
-                token: localStorage.getItem('token')
-            },
-            {
-                headers: new HttpHeaders().set('content-type', 'application/json').set('authorization', environment.TOKEN).set('showLoader', (loader ? '' : 'false'))
-            }
-        ).pipe(
-            tap(_ => this.loading.dismiss()),
-            catchError(this.errorHandler),
-            tap(resp => {
-                if (resp.error === 'Invalid token 4 !') {
-                    if (this.logout()) {
-                        window.location.reload();
-                    }
-                } else if (resp.error === 'Invalid token 2 !') {
-                    delete resp.error;
-                }
-            }),
-            tap(_ => this.loading.dismiss()),
-        );
-    }
+      }),
+      tap(_ => this.loading.dismiss()),
+    );
+  }
 
-    public callPublicAPI(uri: string, loader = true, method: 'GET' | 'POST' = 'GET', params: any = null): Observable<Impostazione[]> {
-        this.loading.dismiss();
-        if (loader && !this.loading.isLoading) {
-            this.loading.dismiss();
-            // this.loading.present(loaderDuration);
+  public callPublicAPI(uri: string, loader = true, method: 'GET' | 'POST' = 'GET', params: any = null): Observable<Impostazione[]> {
+    this.loading.dismiss();
+    if (loader && !this.loading.isLoading) {
+      this.loading.dismiss();
+      // this.loading.present(loaderDuration);
+    }
+    if (method === 'GET') {
+      return this._http.get<Impostazione[]>(
+        `${this._viewConfig.environment.apiGateway}/public/${uri}`,
+        {
+          headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', this._viewConfig.environment.TOKEN).set('showLoader', 'false')
         }
-        if (method === 'GET') {
-            return this._http.get<Impostazione[]>(
-                `${environment.apiGateway}/public/${uri}`,
-                {
-                    headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', environment.TOKEN).set('showLoader', 'false')
-                }
-            ).pipe(
-                // tap(_ => this.loading?.dismiss()),
-                catchError(this.errorHandler),
-                // tap(_ => this.loading?.dismiss()),
-            );
-        } else {
-            return this._http.post<any>(
-                `${environment.apiGateway}/public/${uri}`,
-                params,
-                {
-                    headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', environment.TOKEN).set('showLoader', 'false'),
-                }
-            ).pipe(
-                catchError(this.errorHandler),
-            );
+      ).pipe(
+        // tap(_ => this.loading?.dismiss()),
+        catchError(this.errorHandler),
+        // tap(_ => this.loading?.dismiss()),
+      );
+    } else {
+      return this._http.post<any>(
+        `${this._viewConfig.environment.apiGateway}/public/${uri}`,
+        params,
+        {
+          headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', this._viewConfig.environment.TOKEN).set('showLoader', 'false'),
         }
+      ).pipe(
+        catchError(this.errorHandler),
+      );
     }
+  }
 
-    public checkUser(): boolean {
-        if (localStorage.getItem('token') === undefined || localStorage.getItem('token') === null) {
-            this.App.logged = false;
-            if (window.location.pathname.indexOf('/public/') === -1) {
-                this._router.navigate(['/login']);
-            }
-        } else {
-            this.App.logged = true; // per evitare che la guard mi mandi al login in modo forzato
-            this.App.user = JSON.parse(localStorage.getItem('user'));
-            this.init();
-        }
-        return (this.App.logged);
+  public checkUser(): boolean {
+    if (localStorage.getItem('token') === undefined || localStorage.getItem('token') === null) {
+      this.App.logged = false;
+      if (window.location.pathname.indexOf('/public/') === -1) {
+        this._router.navigate(['/login']);
+      }
+    } else {
+      this.App.logged = true; // per evitare che la guard mi mandi al login in modo forzato
+      this.App.user = JSON.parse(localStorage.getItem('user'));
+      this.init();
     }
+    return (this.App.logged);
+  }
 
-    // potrei allocare direttamente qui il token che mi ritorna il server
-    // e rendere solo un booleano
-    public login(username, password): Observable<any> {
-        if (!this.networkService.isOnline()) {
-            this._sweetAlert.warning('Il tuo dispositivo risulta essere OFFLINE !');
-        }
-        return this._http.post(
-            environment.apiAuth + '?gest=2',
-            {
-                type: 1,
-                username,
-                password,
-                token: environment.TOKEN
-            },
-            {
-                headers: new HttpHeaders().set('content-type', 'application/x-www-form-urlencoded')
-            }
-        ).pipe(
-            catchError(this.errorHandler)
-        );
+  // potrei allocare direttamente qui il token che mi ritorna il server
+  // e rendere solo un booleano
+  public login(username, password): Observable<any> {
+    if (!this.networkService.isOnline()) {
+      this._sweetAlert.warning('Il tuo dispositivo risulta essere OFFLINE !');
     }
+    return this._http.post(
+      this._viewConfig.environment.apiAuth + '?gest=2',
+      {
+        type: 1,
+        username,
+        password,
+        token: this._viewConfig.environment.TOKEN
+      },
+      {
+        headers: new HttpHeaders().set('content-type', 'application/x-www-form-urlencoded')
+      }
+    ).pipe(
+      catchError(this.errorHandler)
+    );
+  }
 
-    public getImpostazione(impostazioneID: number): string | undefined {
-        if (this.App.settings.length > 0) {
-            return this.App.settings.filter(imp => imp.id === impostazioneID)[0]?.valore;
-        }
-        return undefined;
+  public getImpostazione(impostazioneID: number): string | undefined {
+    if (this.App.settings.length > 0) {
+      return this.App.settings.filter(imp => imp.id === impostazioneID)[0]?.valore;
     }
+    return undefined;
+  }
 
-    public routeCheck(url: string): boolean {
-        return this.App?.ruotes?.filter(r => r.path === url)?.length > 0;
+  public routeCheck(url: string): boolean {
+    return this.App?.ruotes?.filter(r => r.path === url)?.length > 0;
+  }
+
+  public logout(): boolean {
+    try {
+      this.App.user = undefined;
+      this.App.logged = false;
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      this.setMenu(false);
+      return true;
+    } catch (e) {
+      return false;
     }
+  }
 
-    public logout(): boolean {
-        try {
-            this.App.user = undefined;
-            this.App.logged = false;
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
-            this.setMenu(false);
-            return true;
-        } catch (e) {
-            return false;
-        }
+  public isLogged(): boolean {
+    return this.App.logged;
+  }
+
+  public setMenu(_value: boolean): void {
+    this._isMenuOpen = _value;
+  }
+
+  public isMenuOpen(): boolean {
+    return this._isMenuOpen;
+  }
+
+  //////////////////////// INIT /////////////////////////
+
+  public init() {
+    // this.checkUser();
+    this.getModulesRoutes();
+    this.setMenu(this.isLogged());
+  }
+
+  /*public initFromSettings() {
+      this.initFaviconFromSetting();
+      this.initTitlefromSetting();
+      this.initLogoFromSetting();
+      this.initThemeFromSetting();
+  }*/
+
+  /*public initTitlefromSetting() {
+      document.title = this.getImpostazione(AppSettingsEnum.TITLE);
+  }
+
+  public initFaviconFromSetting() {
+      document.querySelector('link.favicon').setAttribute('href', this.getImpostazione(AppSettingsEnum.FAVICON));
+  }
+
+  public initLogoFromSetting() {
+      document.querySelectorAll('.logo-only').forEach(img => {
+          img.setAttribute('src', this.getImpostazione(AppSettingsEnum.LOGO));
+      });
+  }
+
+  public initThemeFromSetting() {
+      this._themeService.setTheme(this.getImpostazione(AppSettingsEnum.THEME));
+  }*/
+
+  public getModulesRoutes() {
+    this.callGateway('Ur9E1ZEg7pcZ2Knpya2qCtWUz4EDdQyZLU909XFq/uQtWy0tSVYtWy2UuaFblv0rtkC72Uoiab9ZApYbrZZzrgYumJa8iDIruA@@',
+      `'${localStorage.getItem('token')}'`).subscribe(modules => {
+      if (modules.recordset) {
+        // console.table(modules.recordset);
+        this.App.ruotes = [...modules.recordset];
+        this.App.appPages = [
+          ...modules.recordset
+            .filter(m => m.menu === 1)
+            .map(m => {
+              return {
+                title: m.title,
+                url: `/${m.path_menu}`,
+                icon: m.icon,
+                color: m.color
+              };
+            })
+        ];
+      }
+    });
+  }
+
+  //////////////////////// ERROR ENDLER /////////////////////////
+
+  public errorHandler(error: HttpErrorResponse) {
+    if (this.loading) {
+      this.loading.dismiss();
     }
+    // this._sweetAlert.error(error?.error?.error || error?.message || 'Errore Generico');
+    return throwError(error?.error?.error || error?.message || 'Errore Generico');
+  }
 
-    public isLogged(): boolean {
-        return this.App.logged;
-    }
-
-    public setMenu(_value: boolean): void {
-        this._isMenuOpen = _value;
-    }
-
-    public isMenuOpen(): boolean {
-        return this._isMenuOpen;
-    }
-
-    //////////////////////// INIT /////////////////////////
-
-    public init() {
-        // this.checkUser();
-        this.getModulesRoutes();
-        this.setMenu(this.isLogged());
-    }
-
-    public initFromSettings() {
-        this.initFaviconFromSetting();
-        this.initTitlefromSetting();
-        this.initLogoFromSetting();
-        this.initThemeFromSetting();
-    }
-
-    public initTitlefromSetting() {
-        document.title = this.getImpostazione(AppSettingsEnum.TITLE);
-    }
-
-    public initFaviconFromSetting() {
-        document.querySelector('link.favicon').setAttribute('href', this.getImpostazione(AppSettingsEnum.FAVICON));
-    }
-
-    public initLogoFromSetting() {
-        document.querySelectorAll('.logo-only').forEach(img => {
-            img.setAttribute('src', this.getImpostazione(AppSettingsEnum.LOGO));
-        });
-    }
-
-    public initThemeFromSetting() {
-        this._themeService.setTheme(this.getImpostazione(AppSettingsEnum.THEME));
-    }
-
-    public getModulesRoutes() {
-        this.callGateway('Ur9E1ZEg7pcZ2Knpya2qCtWUz4EDdQyZLU909XFq/uQtWy0tSVYtWy2UuaFblv0rtkC72Uoiab9ZApYbrZZzrgYumJa8iDIruA@@',
-            `'${localStorage.getItem('token')}'`).subscribe(modules => {
-            if (modules.recordset) {
-                // console.table(modules.recordset);
-                this.App.ruotes = [...modules.recordset];
-                this.App.appPages = [
-                    ...modules.recordset
-                        .filter(m => m.menu === 1)
-                        .map(m => {
-                            return {
-                                title: m.title,
-                                url: `/${m.path_menu}`,
-                                icon: m.icon,
-                                color: m.color
-                            };
-                        })
-                ];
-            }
-        });
-    }
-
-    //////////////////////// ERROR ENDLER /////////////////////////
-
-    public errorHandler(error: HttpErrorResponse) {
-        if (this.loading) {
-            this.loading.dismiss();
-        }
-        // this._sweetAlert.error(error?.error?.error || error?.message || 'Errore Generico');
-        return throwError(error?.error?.error || error?.message || 'Errore Generico');
-    }
-
-    ///////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////
 
 }

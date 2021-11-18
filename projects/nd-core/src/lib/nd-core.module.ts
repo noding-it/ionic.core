@@ -13,7 +13,10 @@ import {NomePipe} from "./pipes/nome.pipe";
 import {OnlyExtensionPipe} from "./pipes/onlyextension.pipe";
 import {SafeHtmlPipe} from "./pipes/safe-html.pipe";
 import {EnvironmentConfig} from "./interfaces/environment-config";
-import {installPackage} from "@angular/cli/utilities/install-package";
+import {FormsModule} from "@angular/forms";
+import {ColorPickerModule} from "ngx-color-picker";
+import {CommonModule} from "@angular/common";
+import {ModalPreviewComponent} from "./modal/modal-preview.component";
 
 @NgModule({
   declarations: [
@@ -22,6 +25,7 @@ import {installPackage} from "@angular/cli/utilities/install-package";
     ModalBaseCrudComponent,
     ModalDescrizioneComponent,
     ModalSearchComponent,
+    ModalPreviewComponent,
     DescrizionePipe,
     FileSizePipe,
     LinkPipe,
@@ -31,10 +35,25 @@ import {installPackage} from "@angular/cli/utilities/install-package";
     SafeHtmlPipe,
   ],
   imports: [
-    IonicModule
+    CommonModule,
+    IonicModule,
+    FormsModule,
+    ColorPickerModule,
   ],
   exports: [
-
+    NodDragDropDirective,
+    ReadMoreDirective,
+    ModalBaseCrudComponent,
+    ModalDescrizioneComponent,
+    ModalSearchComponent,
+    ModalPreviewComponent,
+    DescrizionePipe,
+    FileSizePipe,
+    LinkPipe,
+    NoextensionPipe,
+    NomePipe,
+    OnlyExtensionPipe,
+    SafeHtmlPipe,
   ]
 })
 export class NdCoreModule {
@@ -48,7 +67,7 @@ export class NdCoreModule {
   public static forRoot(environment: EnvironmentConfig): ModuleWithProviders<NdCoreModule> {
     return {
       ngModule: NdCoreModule,
-      providers: [{provide: {} as EnvironmentConfig, useValue: environment}]
+      providers: [{provide: 'CORE_ENVIRONMENT', useValue: environment}]
     };
   }
 }
