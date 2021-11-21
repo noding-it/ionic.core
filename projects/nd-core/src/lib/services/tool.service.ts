@@ -104,7 +104,7 @@ export class ToolService {
     }
 
     private _getLocalIPAddress(): Observable<string> {
-        const RTCPeerConnection = window.webkitRTCPeerConnection || window['mozRTCPeerConnection'];
+        const RTCPeerConnection = window['webkitRTCPeerConnection'] || window['mozRTCPeerConnection'];
         if (RTCPeerConnection) {
             return new Observable(observer => {
                 const rtc = new RTCPeerConnection({

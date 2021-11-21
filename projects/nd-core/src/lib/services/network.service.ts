@@ -8,7 +8,7 @@ export class NetworkService {
     private _online = true;
 
     public checkConnection(): boolean {
-        const networkState = navigator['connection'].type || navigator['connection'].effectiveType;
+        const networkState = navigator['connection'].type || navigator['connection']['effectiveType'];
 
         const Connection = window['Connection'] || {
             'CELL': 'cellular',
