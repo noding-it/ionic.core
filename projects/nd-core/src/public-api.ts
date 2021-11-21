@@ -11,6 +11,14 @@ export * from './lib/guards/auth.guard';
 export * from './lib/guards/admin.guard';
 export * from './lib/guards/route-check.guard';
 
+export * from './lib/pipes/descrizione.pipe';
+export * from './lib/pipes/link.pipe';
+export * from './lib/pipes/file-size.pipe';
+export * from './lib/pipes/nome.pipe';
+export * from './lib/pipes/noextension.pipe';
+export * from './lib/pipes/onlyextension.pipe';
+export * from './lib/pipes/safe-html.pipe';
+
 export * from './lib/interceptors/request.interceptor';
 
 export * from './lib/modal/modal-base-crud.component';

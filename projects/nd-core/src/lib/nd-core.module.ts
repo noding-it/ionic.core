@@ -9,6 +9,13 @@ import {ColorPickerModule} from "ngx-color-picker";
 import {CommonModule} from "@angular/common";
 import {ModalPreviewComponent} from "./modal/modal-preview.component";
 import {PdfViewerModule} from "ng2-pdf-viewer";
+import {DescrizionePipe} from "./pipes/descrizione.pipe";
+import {FileSizePipe} from "./pipes/file-size.pipe";
+import {LinkPipe} from "./pipes/link.pipe";
+import {NoextensionPipe} from "./pipes/noextension.pipe";
+import {NomePipe} from "./pipes/nome.pipe";
+import {OnlyExtensionPipe} from "./pipes/onlyextension.pipe";
+import {SafeHtmlPipe} from "./pipes/safe-html.pipe";
 
 @NgModule({
   declarations: [
@@ -16,6 +23,13 @@ import {PdfViewerModule} from "ng2-pdf-viewer";
     ModalDescrizioneComponent,
     ModalSearchComponent,
     ModalPreviewComponent,
+    DescrizionePipe,
+    FileSizePipe,
+    LinkPipe,
+    NoextensionPipe,
+    NomePipe,
+    OnlyExtensionPipe,
+    SafeHtmlPipe,
   ],
   imports: [
     CommonModule,
@@ -29,6 +43,13 @@ import {PdfViewerModule} from "ng2-pdf-viewer";
     ModalDescrizioneComponent,
     ModalSearchComponent,
     ModalPreviewComponent,
+    DescrizionePipe,
+    FileSizePipe,
+    LinkPipe,
+    NoextensionPipe,
+    NomePipe,
+    OnlyExtensionPipe,
+    SafeHtmlPipe,
   ]
 })
 export class NdCoreModule {
