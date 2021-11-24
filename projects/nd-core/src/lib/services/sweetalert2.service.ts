@@ -7,7 +7,6 @@ import Swal, {SweetAlertIcon} from 'sweetalert2';
 // https://sweetalert2.github.io/
 export class Sweetalert2Service {
 
-
     error(text: string, title?: string) {
         Swal.fire({
             title,
