@@ -3,7 +3,6 @@ import {Platform} from '@ionic/angular';
 import {Observable} from 'rxjs/internal/Observable';
 import {of} from 'rxjs';
 import * as FileSaver from 'file-saver';
-import * as moment from 'moment';
 
 @Injectable({
     providedIn: 'root'
@@ -33,11 +32,6 @@ export class ToolService {
             .map(a => [Math.random(), a])
             .sort((a, b) => a[0] - b[0])
             .map(a => a[1]);
-    }
-
-    public getMaxYearForDatePicker() {
-        // todo su ion-input non funziona, puoi mettere comunque la data che vuoi
-        return moment().add(2, 'years').toDate();
     }
 
     public setFocus(selector: string) {

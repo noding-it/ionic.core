@@ -9,7 +9,6 @@ import {Device} from '@ionic-native/device/ngx';
 import {IGatewayResponse} from '../interfaces/gateway-response';
 import {AppConfig, Impostazione} from '../interfaces/app';
 import {NetworkService} from './network.service';
-import {ThemeService} from './theme.service';
 import {Sweetalert2Service} from './sweetalert2.service';
 import {Router} from '@angular/router';
 import {EnvironmentConfig} from "../interfaces/environment-config";
@@ -26,7 +25,6 @@ export class GlobalService {
     public loading: LoadingService,
     public device: Device,
     public networkService: NetworkService,
-    private _themeService: ThemeService,
     private _sweetAlert: Sweetalert2Service,
     private _router: Router,
   ) {
@@ -187,31 +185,6 @@ export class GlobalService {
     this.getModulesRoutes();
     this.setMenu(this.isLogged());
   }
-
-  /*public initFromSettings() {
-      this.initFaviconFromSetting();
-      this.initTitlefromSetting();
-      this.initLogoFromSetting();
-      this.initThemeFromSetting();
-  }*/
-
-  /*public initTitlefromSetting() {
-      document.title = this.getImpostazione(AppSettingsEnum.TITLE);
-  }
-
-  public initFaviconFromSetting() {
-      document.querySelector('link.favicon').setAttribute('href', this.getImpostazione(AppSettingsEnum.FAVICON));
-  }
-
-  public initLogoFromSetting() {
-      document.querySelectorAll('.logo-only').forEach(img => {
-          img.setAttribute('src', this.getImpostazione(AppSettingsEnum.LOGO));
-      });
-  }
-
-  public initThemeFromSetting() {
-      this._themeService.setTheme(this.getImpostazione(AppSettingsEnum.THEME));
-  }*/
 
   public getModulesRoutes() {
     this.callGateway('Ur9E1ZEg7pcZ2Knpya2qCtWUz4EDdQyZLU909XFq/uQtWy0tSVYtWy2UuaFblv0rtkC72Uoiab9ZApYbrZZzrgYumJa8iDIruA@@',
