@@ -1,6 +1,5 @@
 export interface AppConfig {
     user: any;
-    isDevMode: boolean;
     logged: boolean;
     settings: Impostazione[];
     ruotes: Ruote[];

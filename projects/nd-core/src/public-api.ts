@@ -28,6 +28,7 @@ export * from './lib/services/loading.service';
 export * from './lib/services/modal.service';
 export * from './lib/services/modal-base.service';
 export * from './lib/services/network.service';
+export * from './lib/services/notification.service';
 export * from './lib/services/pdf-make.service';
 export * from './lib/services/popover.service';
 export * from './lib/services/qr-code.service';

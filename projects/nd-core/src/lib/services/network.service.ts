@@ -7,7 +7,7 @@ export class NetworkService {
 
     private _online = true;
 
-    /*public checkConnection(): boolean {
+    public checkConnection(): boolean {
         const networkState = navigator['connection'].type || navigator['connection']['effectiveType'];
 
         const Connection = window['Connection'] || {
@@ -33,7 +33,7 @@ export class NetworkService {
 
         this._online = !(networkState === Connection.NONE);
         return this._online;
-    }*/
+    }
 
     public isOnline(): boolean {
         return this._online;

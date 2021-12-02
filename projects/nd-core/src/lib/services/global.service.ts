@@ -33,7 +33,6 @@ export class GlobalService {
   private _isMenuOpen: boolean;
 
   public App: AppConfig = {
-    isDevMode: isDevMode(),
     user: undefined,
     logged: true,
     settings: [],
