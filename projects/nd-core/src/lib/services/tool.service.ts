@@ -74,7 +74,7 @@ export class ToolService {
             document.URL.indexOf('http://localhost') === 0 ||
             document.URL.indexOf('ionic') === 0 ||
             document.URL.indexOf('https://localhost') === 0
-        ); // && !isDevMode();
+        );
     }
 
     public isBrowser(): boolean {
