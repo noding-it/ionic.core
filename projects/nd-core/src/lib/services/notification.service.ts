@@ -38,14 +38,11 @@ export class NotificationService {
    * @param message
    * @param icon
    */
-  public show(title: string, message: string, icon: string) {
+  public show(title: string, options?: NotificationOptions) {
     if (!this._supported || this._permission !== NotificationPermissionEnum.GRANTED) {
-      alert(message);
+      alert(options.body);
     } else {
-      new Notification(title, {
-        body: message,
-        icon // `assets/images/logo/xage_logo.png`
-      });
+      new Notification(title, {...options});
     }
   }
 
