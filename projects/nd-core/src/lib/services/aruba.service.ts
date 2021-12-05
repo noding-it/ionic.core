@@ -1,11 +1,13 @@
-import {Injectable, isDevMode} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {GlobalService} from './global.service';
 import {Observable} from 'rxjs';
 
-const AUTH_URL = isDevMode() ? 'https://demoauth.fatturazioneelettronica.aruba.it/' : 'https://auth.fatturazioneelettronica.aruba.it/';
-const API_URL = isDevMode() ? 'https://demows.fatturazioneelettronica.aruba.it/' : 'https://ws.fatturazioneelettronica.aruba.it/';
+
+const AUTH_URL = 'https://demoauth.fatturazioneelettronica.aruba.it/'; // isDevMode() ? 'https://demoauth.fatturazioneelettronica.aruba.it/' : 'https://auth.fatturazioneelettronica.aruba.it/';
+const API_URL = 'https://demows.fatturazioneelettronica.aruba.it/'; // isDevMode() ? 'https://demows.fatturazioneelettronica.aruba.it/' : 'https://ws.fatturazioneelettronica.aruba.it/';
 const ARUBA_CODE = 'KRRH6B9';
+
 
 @Injectable({
     providedIn: 'root'

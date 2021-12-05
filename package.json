@@ -11,7 +11,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "adduser": "npm adduser --registry https://registry.noding.it:4873",
-    "nd:core:build": "ng build nd-core",
+    "nd:core:build": "ng build nd-core --configuration production",
     "nd:core:publish": "cd dist/nd-core && npm publish --registry https://registry.noding.it:4873"
   },
   "publishConfig": {
