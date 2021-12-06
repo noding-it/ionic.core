@@ -75,14 +75,14 @@ export class GlobalService {
     );
   }
 
-  public callPublicAPI(uri: string, loader = true, method: 'GET' | 'POST' = 'GET', params: any = null): Observable<Impostazione[]> {
+  public callPublicAPI(uri: string, loader = true, method: 'GET' | 'POST' = 'GET', params: any = null): Observable<any> {
     this.loading.dismiss();
     if (loader && !this.loading.isLoading) {
       this.loading.dismiss();
       // this.loading.present(loaderDuration);
     }
     if (method === 'GET') {
-      return this._http.get<Impostazione[]>(
+      return this._http.get<any>(
         `${this._viewConfig.environment.apiGateway}/public/${uri}`,
         {
           headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', this._viewConfig.environment.TOKEN).set('showLoader', 'false')
