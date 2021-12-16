@@ -42,6 +42,14 @@ export class DropboxService {
       });
   }
 
+  public share(path): Observable<any> {
+    return this._http.get<IGatewayResponse>(
+      `${this._viewConfig.environment.apiGateway}/storage/share/${path}`,
+      {
+        headers: new HttpHeaders().set('content-type', 'application/x-www-form-urlencoded').set('authorization', `UpThere ${localStorage.getItem('token')}`)
+      });
+  }
+
   public list(id: string, path: string): Observable<any> {
     return this._gs.callGateway('lyjjh7KJB9lUnI2tlvW1VVxwO9ZkjBnoZYIdAFbQnNotWy0tSVYtWy3W45P8ggwc7UHj7/gQVvhJt0T/z6gmEivixTGZqdDIcA@@', `${id},'${path}'`, false);
   }
