@@ -38,7 +38,10 @@ export class DropboxService {
     return this._http.get<IGatewayResponse>(
       `${this._viewConfig.environment.apiGateway}/storage/get/${object.path}`,
       {
-        headers: new HttpHeaders().set('content-type', 'application/x-www-form-urlencoded').set('authorization', `UpThere ${localStorage.getItem('token')}`)
+        headers: new HttpHeaders()
+          .set('content-type', 'application/x-www-form-urlencoded')
+          .set('authorization', `UpThere ${localStorage.getItem('token')}`)
+          .set('showLoader', 'false')
       });
   }
 
