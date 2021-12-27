@@ -4,6 +4,7 @@ export interface AppConfig {
     settings: Impostazione[];
     ruotes: Ruote[];
     appPages: any[];
+    language?: string;
 }
 
 
