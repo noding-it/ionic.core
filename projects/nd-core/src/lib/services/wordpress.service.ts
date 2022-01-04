@@ -11,7 +11,7 @@ import {EnvironmentConfig} from "../interfaces/environment-config";
 export class WordpressService {
 
   constructor(
-    @Inject('CORE_ENVIRONMENT') private _viewConfig : EnvironmentConfig,
+    @Inject('CORE_ENVIRONMENT') private _viewConfig: EnvironmentConfig,
     private _http: HttpClient,
     private _gs: GlobalService,
   ) {
@@ -53,7 +53,7 @@ export class WordpressService {
     );
   }
 
-  public createUser(params: string): Observable<any> {
+  public createUser(params: object): Observable<any> {
     return this._http.post(
       `${this._viewConfig.environment.apiGateway}/woocommerce/user/create`,
       {params},
@@ -79,7 +79,7 @@ export class WordpressService {
     );
   }
 
-  public createProduct(params: string): Observable<any> {
+  public createProduct(params: object): Observable<any> {
     return this._http.post(
       `${this._viewConfig.environment.apiGateway}/woocommerce/product/create`,
       {
@@ -93,7 +93,7 @@ export class WordpressService {
     );
   }
 
-  public updateProduct(params: string, codiceWordpress: number): Observable<any> {
+  public updateProduct(params: object, codiceWordpress: number): Observable<any> {
     return this._http.put(
       `${this._viewConfig.environment.apiGateway}/woocommerce/product/update/${codiceWordpress}`,
       {
@@ -141,12 +141,23 @@ export class WordpressService {
     );
   }
 
-  public createOrder(params: string): Observable<any> {
+  public createOrder(params: object): Observable<any> {
     return this._http.post(
       `${this._viewConfig.environment.apiGateway}/woocommerce/order/create`,
       {
         params,
       },
+      {
+        headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', `AEI ${localStorage.getItem('token')}`).set('Woocommerce', `${this._viewConfig.environment.WOOCOMMERCE_TOKEN}`),
+      }
+    ).pipe(
+      catchError(this._gs.errorHandler)
+    );
+  }
+
+  public deleteOrdine(codiceOrdine: number): Observable<any> {
+    return this._http.delete(
+      `${this._viewConfig.environment.apiGateway}/woocommerce/orders/delete/${codiceOrdine}`,
       {
         headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', `AEI ${localStorage.getItem('token')}`).set('Woocommerce', `${this._viewConfig.environment.WOOCOMMERCE_TOKEN}`),
       }

@@ -43,6 +43,7 @@ export * from './lib/services/qr-code.service';
 export * from './lib/services/sweetalert2.service';
 export * from './lib/services/toast.service';
 export * from './lib/services/tool.service';
+export * from './lib/services/visibility.service';
 export * from './lib/services/wordpress.service';
 
 
