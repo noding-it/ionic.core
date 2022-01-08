@@ -79,6 +79,17 @@ export class WordpressService {
     );
   }
 
+  public deleteUser(codiceUtente: number): Observable<any> {
+    return this._http.delete(
+      `${this._viewConfig.environment.apiGateway}/woocommerce/user/delete/${codiceUtente}`,
+      {
+        headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', `AEI ${localStorage.getItem('token')}`).set('Woocommerce', `${this._viewConfig.environment.WOOCOMMERCE_TOKEN}`),
+      }
+    ).pipe(
+      catchError(this._gs.errorHandler)
+    );
+  }
+
   public createProduct(params: object): Observable<any> {
     return this._http.post(
       `${this._viewConfig.environment.apiGateway}/woocommerce/product/create`,
