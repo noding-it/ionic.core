@@ -105,7 +105,7 @@ export class GlobalService {
     }
   }
 
-  public checkUser(): boolean {
+  public checkUser(moduleFilterFunction: Function): boolean {
     if (localStorage.getItem('token') === undefined || localStorage.getItem('token') === null) {
       this.App.logged = false;
       if (window.location.pathname.indexOf('/public/') === -1) {
@@ -114,7 +114,7 @@ export class GlobalService {
     } else {
       this.App.logged = true; // per evitare che la guard mi mandi al login in modo forzato
       this.App.user = JSON.parse(localStorage.getItem('user'));
-      this.init();
+      this.init(moduleFilterFunction);
     }
     return (this.App.logged);
   }
@@ -179,13 +179,13 @@ export class GlobalService {
 
   //////////////////////// INIT /////////////////////////
 
-  public init() {
+  public init(moduleFilterFunction: Function) {
     // this.checkUser();
-    this.getModulesRoutes();
+    this.getModulesRoutes(moduleFilterFunction);
     this.setMenu(this.isLogged());
   }
 
-  public getModulesRoutes() {
+  public getModulesRoutes(moduleFilterFunction: Function) {
     this.callGateway('Ur9E1ZEg7pcZ2Knpya2qCtWUz4EDdQyZLU909XFq/uQtWy0tSVYtWy2UuaFblv0rtkC72Uoiab9ZApYbrZZzrgYumJa8iDIruA@@',
       `'${localStorage.getItem('token')}'`).subscribe(modules => {
       if (modules.recordset) {
@@ -193,9 +193,10 @@ export class GlobalService {
         this.App.ruotes = [...modules.recordset];
         this.App.appPages = [
           ...modules.recordset
-            .filter(m => m.menu === 1)
+            .filter(moduleFilterFunction) // m => m.menu === 1)
             .map(m => {
               return {
+                id: m.id,
                 title: m.title,
                 url: `/${m.path_menu}`,
                 icon: m.icon,
@@ -203,6 +204,25 @@ export class GlobalService {
               };
             })
         ];
+
+        if (this.App.appPages.length > 0 && modules.recordset[0].hasOwnProperty('id_parent')) {
+          for (let i = 0; i < this.App.appPages.length; i++) {
+            this.App.appPages[i].subMenu = [];
+            this.App.appPages[i].subMenu = [
+              ...modules.recordset
+                .filter(m => m.menu === 1 && m.id_parent === this.App.appPages[i].id)
+                .map(m => {
+                  return {
+                    id: m.id,
+                    title: m.title,
+                    url: `/${m.path_menu}`,
+                    icon: m.icon,
+                    color: m.color
+                  };
+                })
+            ];
+          }
+        }
       }
     });
   }
