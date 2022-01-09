@@ -7,7 +7,7 @@ import {Platform} from '@ionic/angular';
 import {LoadingService} from './loading.service';
 import {Device} from '@ionic-native/device/ngx';
 import {IGatewayResponse} from '../interfaces/gateway-response';
-import {AppConfig, Impostazione} from '../interfaces/app';
+import {AppConfig} from '../interfaces/app';
 import {NetworkService} from './network.service';
 import {Sweetalert2Service} from './sweetalert2.service';
 import {Router} from '@angular/router';
@@ -83,7 +83,7 @@ export class GlobalService {
     }
     if (method === 'GET') {
       return this._http.get<any>(
-        `${this._viewConfig.environment.apiGateway}/public/${uri}`,
+        `${this._viewConfig.environment.apiGateway}${uri}`,
         {
           headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', this._viewConfig.environment.TOKEN).set('showLoader', 'false')
         }
@@ -94,7 +94,7 @@ export class GlobalService {
       );
     } else {
       return this._http.post<any>(
-        `${this._viewConfig.environment.apiGateway}/public/${uri}`,
+        `${this._viewConfig.environment.apiGateway}${uri}`,
         params,
         {
           headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', this._viewConfig.environment.TOKEN).set('showLoader', 'false'),
