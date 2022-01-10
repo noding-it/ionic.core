@@ -1,6 +1,9 @@
 {
   "name": "@noding.ionic/core",
-  "version": "0.0.34",
+  "version": "0.0.35",
+  "scripts": {
+    "npm i": "npm i"
+  },
   "peerDependencies": {
     "@angular/common": "^13.0.2",
     "@angular/core": "^13.0.2",

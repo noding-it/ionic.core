@@ -20,7 +20,13 @@ import {BaseCrudConfig} from "../interfaces/base-crud-config";
             </ion-item>
             <ion-item *ngIf="modalConfig?.includeColor">
                 <ion-label position="fixed">Colore:</ion-label>
-                <input cpPosition="bottom"
+              <div class="ion-box"
+                   style="width: 100%; padding-bottom: 100%; position: relative;"
+                   ngx-colors-trigger cpOutputFormat="hex"
+                   [style.background]="localModel.color"
+                   [(ngModel)]="localModel.color">
+              </div>
+                <!--<input cpPosition="bottom"
                        [cpDisableInput]="true"
                        cpOutputFormat="hex"
                        [cpCancelButton]="true"
@@ -30,7 +36,7 @@ import {BaseCrudConfig} from "../interfaces/base-crud-config";
                        [(ngModel)]="localModel.color"
                        [(colorPicker)]="localModel.color"
                        [style.background]="localModel.color"
-                       class="color-picker-style"/>
+                       class="color-picker-style"/>-->
             </ion-item>
             <ion-row>
                 <ion-col class="ion-text-center">

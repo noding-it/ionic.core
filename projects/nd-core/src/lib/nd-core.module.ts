@@ -5,10 +5,10 @@ import {ModalSearchComponent} from "./modal/modal-search.component";
 import {IonicModule} from "@ionic/angular";
 import {EnvironmentConfig} from "./interfaces/environment-config";
 import {FormsModule} from "@angular/forms";
-import {ColorPickerModule} from "ngx-color-picker";
 import {CommonModule} from "@angular/common";
 import {ModalPreviewComponent} from "./modal/modal-preview.component";
 import {PdfViewerModule} from "ng2-pdf-viewer";
+import {ColorPickerModule} from 'ngx-color-picker';
 
 @NgModule({
   declarations: [
