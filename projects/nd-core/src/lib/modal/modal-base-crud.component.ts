@@ -20,12 +20,11 @@ import {BaseCrudConfig} from "../interfaces/base-crud-config";
             </ion-item>
             <ion-item *ngIf="modalConfig?.includeColor">
                 <ion-label position="fixed">Colore:</ion-label>
-              <div class="ion-box"
-                   style="width: 100%; padding-bottom: 100%; position: relative;"
+              <ngx-colors class="ion-box" style="width: 100%;"
                    ngx-colors-trigger cpOutputFormat="hex"
                    [style.background]="localModel.color"
                    [(ngModel)]="localModel.color">
-              </div>
+              </ngx-colors>
                 <!--<input cpPosition="bottom"
                        [cpDisableInput]="true"
                        cpOutputFormat="hex"
@@ -52,7 +51,12 @@ import {BaseCrudConfig} from "../interfaces/base-crud-config";
                     <ion-row style="width: 100%">
                         <!--<ion-col size="11" style="overflow: hidden;white-space: normal;" >{{item.descrizione}}</ion-col>-->
                         <ion-col size="1" *ngIf="modalConfig?.includeColor" class="center">
-                            <span style="width: 100% !important;height: 100% !important;cursor: pointer !important;"
+                          <ngx-colors class="ion-box" style="width: 100%;"
+                               ngx-colors-trigger cpOutputFormat="hex"
+                               [style.background]="item.colore"
+                               [(ngModel)]="item.colore">
+                          </ngx-colors>
+                            <!--<span style="width: 100% !important;height: 100% !important;cursor: pointer !important;"
                                   [cpDisableInput]="true"
                                   cpDialogDisplay="inline"
                                   cpOutputFormat="hex"
@@ -63,7 +67,7 @@ import {BaseCrudConfig} from "../interfaces/base-crud-config";
                                   cpOKButtonText="Scegli"
                                   [style.background]="item.colore"
                                   class="color-picker-style">
-                            </span>
+                            </span>-->
                         </ion-col>
                         <ion-col (click)="changeDetectorRef.detectChanges()"
                                  size="{{modalConfig?.includeColor ? 10 : 11}}"
@@ -88,7 +92,14 @@ import {BaseCrudConfig} from "../interfaces/base-crud-config";
             </ion-row>
         </ion-footer>
     `,
-    styles: []
+    styles: [`
+      .ion-box {
+        border-radius: 10px !important;
+        border: 2px solid #048e8a !important;
+        background: #FFFFFF;
+        filter: drop-shadow(0.1rem 0.3rem 0.3rem rgba(4, 142, 138, 0.6));
+      }
+    `]
 })
 export class ModalBaseCrudComponent implements AfterViewInit {
 

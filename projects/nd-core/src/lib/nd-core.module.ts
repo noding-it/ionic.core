@@ -9,6 +9,7 @@ import {CommonModule} from "@angular/common";
 import {ModalPreviewComponent} from "./modal/modal-preview.component";
 import {PdfViewerModule} from "ng2-pdf-viewer";
 import {ColorPickerModule} from 'ngx-color-picker';
+import {NgxColorsModule} from 'ngx-colors';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import {ColorPickerModule} from 'ngx-color-picker';
     FormsModule,
     ColorPickerModule,
     PdfViewerModule,
+    NgxColorsModule,
   ],
   exports: [
     ModalBaseCrudComponent,

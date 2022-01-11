@@ -3,7 +3,17 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  baseUrl: `https://test.upthere.it/`,
+  apiUrl: `https://test.upthere.it/BackEnd/`,
+  apiAuth: `https://test.upthere.it/BackEnd/FD_Login.php?gest=2`,
+  apiWpAuth: ``,
+  apiGateway: `https://betest.upthere.it:8080`,
+  apiDBox: `https://test.upthere.it/BackEnd/FD_DataServiceGatewayCrypt.php`,
+  apiMedia: `https://test.upthere.it/BackEnd/FD_MediaCorsGateway.php`,
+  TOKEN: `8F39D289C2D21ABA1D95845FF5F26BE1`,
+  socketUrl: `https://socket.myvirtualab.it:3000`,
+  WOOCOMMERCE_TOKEN: ''
 };
 
 /*
