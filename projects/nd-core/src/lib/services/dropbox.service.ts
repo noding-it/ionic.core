@@ -88,4 +88,16 @@ export class DropboxService {
     }
   }
 
+  public openPreviewFromLink(link: string, fileName: string, fullSize = true): void {
+    const fileExtension = fileName.split('.').reverse()[0];
+    if (this.supportedExtensionPreview.includes(fileExtension.toLowerCase())) {
+      const modalFolder = this._modalService.present(ModalPreviewComponent, {
+          name: fileName,
+          link,
+          type: fileExtension === 'pdf' ? 'pdf' : 'image', // trick per ora
+        }, (fullSize) ? 'sc-ion-archivio-full-screen-mobile' : 'sc-ion-archivio-middle-width',
+      );
+    }
+  }
+
 }
