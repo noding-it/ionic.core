@@ -21,7 +21,6 @@ export class LoadingService {
      */
     public isLoading = false;
     public loaderState = this.loaderSubject.asObservable();
-    public progressState = this.progressSubject.asObservable();
     public loadingMap: Map<string, boolean> = new Map<string, boolean>();
 
     async present(duration = 2000) {
@@ -69,11 +68,4 @@ export class LoadingService {
       }
     }
 
-    public showProgress() {
-      this.progressSubject.next({show: true});
-    }
-
-    public hideProgress() {
-      this.progressSubject.next({show: false});
-    }
 }
