@@ -14,20 +14,26 @@ export class RequestInterceptor implements HttpInterceptor {
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
         if (req.headers.get('showLoader') !== 'false') {
-            this._loadingService.present();
+            // this._loadingService.present();
+           this._loadingService.setLoading(true, req.url);
         }
 
         return next.handle(req)
             .pipe(
-                tap(
-                    (event: HttpEvent<any>) => {
-                        if (event instanceof HttpResponse) {
-                            this._loadingService.dismiss();
-                        }
-                    },
-                    (err: any) => {
+                catchError((err) => {
+                  this._loadingService.setLoading(false, request.url);
+                  this.onProgressEnd();
+                  return err;
+                }),
+                map<HttpEvent<any>, any>((evt: HttpEvent<any>) => {
+                    /*if (event instanceof HttpResponse) {
                         this._loadingService.dismiss();
-                    })
-            );
+                    }*/
+                    if (evt instanceof HttpResponse && request.headers.get('showLoader') !== 'false') {
+                      this._loadingService.setLoading(false, request.url);
+                    }
+                    return evt;
+                })
+        );
     }
 }
