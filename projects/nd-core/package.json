@@ -1,8 +1,8 @@
 {
   "name": "@noding.ionic/core",
-  "version": "0.0.51",
+  "version": "0.0.53",
   "scripts": {
-    "npm i": "npm i --force"
+    "omg": "npm i --force"
   },
   "dependencies": {
     "tslib": "~2.3.1"
