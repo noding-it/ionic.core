@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {LoadingController} from '@ionic/angular';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LoadingService {
 
@@ -13,13 +13,18 @@ export class LoadingService {
 
   async present(duration = 2000) {
     this.isLoading = true;
-    const response = await this.loadingController.create({
+    return await this.loadingController.create({
       spinner: null,
       duration,
-      cssClass: 'custom-loading'
-    })
-    return response.present();
-
+      cssClass: 'custom-loading',
+    }).then(a => {
+      a.present().then(() => {
+        // console.log('presented');
+        if (!this.isLoading) {
+          a.dismiss().then(() => ''); // console.log('abort presenting'));
+        }
+      });
+    });
   }
 
   async dismiss() {
