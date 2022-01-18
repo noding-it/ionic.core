@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {LoadingController} from '@ionic/angular';
-import {BehaviorSubject, Subject} from 'rxjs';
 
 export interface LoaderState {
   show: boolean;
@@ -14,34 +13,21 @@ export class LoadingService {
   constructor(public loadingController: LoadingController) {
   }
 
-  private loaderSubject = new BehaviorSubject<LoaderState>({show: undefined});
-  private progressSubject = new Subject<LoaderState>();
-
   /**
    * Contains in-progress loading requests
    */
-  public isLoading = false;
-  public loaderState = this.loaderSubject.asObservable();
   public loadingMap: Map<string, boolean> = new Map<string, boolean>();
 
-  async present(duration = 2000) {
-    this.isLoading = true;
-    return await this.loadingController.create({
+  async present(duration = 2000): Promise<void> {
+    const loader = await this.loadingController.create({
       spinner: null,
       duration,
       cssClass: 'custom-loading',
-    }).then(a => {
-      a.present().then(() => {
-        // console.log('presented');
-        if (!this.isLoading) {
-          a.dismiss().then(() => ''); // console.log('abort presenting'));
-        }
-      });
     });
+    await loader.present();
   }
 
   async dismiss() {
-    this.isLoading = false;
     return await this.loadingController.dismiss(); // console.log('dismissed'));
   }
 
@@ -55,18 +41,18 @@ export class LoadingService {
    * param loading {boolean}
    * param url {string}
    */
-  setLoading(loading: boolean, url: string): void {
+  async setLoading(loading: boolean, url: string): Promise<void> {
     if (!url) {
       throw new Error('The request URL must be provided to the LoadingService.setLoading function');
     }
     if (loading === true) {
       this.loadingMap.set(url, loading);
-      this.loaderSubject.next({show: true});
+      await this.present();
     } else if (loading === false && this.loadingMap.has(url)) {
       this.loadingMap.delete(url);
     }
     if (this.loadingMap.size === 0) {
-      this.loaderSubject.next({show: false});
+      await this.dismiss();
     }
   }
 

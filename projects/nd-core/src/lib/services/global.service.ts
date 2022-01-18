@@ -4,7 +4,6 @@ import {throwError} from 'rxjs';
 import {Observable} from 'rxjs/internal/Observable';
 import {catchError, tap} from 'rxjs/operators';
 import {Platform} from '@ionic/angular';
-import {LoadingService} from './loading.service';
 import {Device} from '@ionic-native/device/ngx';
 import {IGatewayResponse} from '../interfaces/gateway-response';
 import {AppConfig} from '../interfaces/app';
@@ -22,7 +21,6 @@ export class GlobalService {
     @Inject('CORE_ENVIRONMENT') private _viewConfig: EnvironmentConfig,
     private _http: HttpClient,
     public platform: Platform,
-    public loading: LoadingService,
     public device: Device,
     public networkService: NetworkService,
     private _sweetAlert: Sweetalert2Service,
@@ -43,11 +41,6 @@ export class GlobalService {
   //////////////////////// GLOBAL FUNCTION /////////////////////////
 
   public callGateway(process, params, loader = true, gtw = 'apiDBox', loaderDuration = 1000): Observable<IGatewayResponse> {
-    this.loading.dismiss();
-    if (loader && !this.loading.isLoading) {
-      this.loading.dismiss();
-      // this.loading.present(loaderDuration);
-    }
     return this._http.post<IGatewayResponse>(
       this._viewConfig.environment[gtw] + '?gest=2',
       {
@@ -60,7 +53,6 @@ export class GlobalService {
         headers: new HttpHeaders().set('content-type', 'application/json').set('authorization', this._viewConfig.environment.TOKEN).set('showLoader', (loader ? '' : 'false'))
       }
     ).pipe(
-      tap(_ => this.loading.dismiss()),
       catchError(this.errorHandler),
       tap(resp => {
         if (resp.error === 'Invalid token 4 !') {
@@ -71,16 +63,10 @@ export class GlobalService {
           delete resp.error;
         }
       }),
-      tap(_ => this.loading.dismiss()),
     );
   }
 
   public callPublicAPI(uri: string, loader = true, method: 'GET' | 'POST' = 'GET', params: any = null): Observable<any> {
-    this.loading.dismiss();
-    if (loader && !this.loading.isLoading) {
-      this.loading.dismiss();
-      // this.loading.present(loaderDuration);
-    }
     if (method === 'GET') {
       return this._http.get<any>(
         `${this._viewConfig.environment.apiGateway}${uri}`,
@@ -88,9 +74,7 @@ export class GlobalService {
           headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', this._viewConfig.environment.TOKEN).set('showLoader', 'false')
         }
       ).pipe(
-        // tap(_ => this.loading?.dismiss()),
         catchError(this.errorHandler),
-        // tap(_ => this.loading?.dismiss()),
       );
     } else {
       return this._http.post<any>(
@@ -230,10 +214,6 @@ export class GlobalService {
   //////////////////////// ERROR ENDLER /////////////////////////
 
   public errorHandler(error: HttpErrorResponse) {
-    if (this.loading) {
-      this.loading.dismiss();
-    }
-    // this._sweetAlert.error(error?.error?.error || error?.message || 'Errore Generico');
     return throwError(error?.error?.error || error?.message || 'Errore Generico');
   }
 
