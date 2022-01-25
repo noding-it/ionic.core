@@ -3,6 +3,7 @@ import {Observable} from 'rxjs/internal/Observable';
 import {catchError, map} from 'rxjs/operators';
 import {LoadingService} from '../services/loading.service';
 import {Injectable} from '@angular/core';
+import {throwError} from "rxjs";
 
 @Injectable({providedIn: 'root'})
 export class RequestInterceptor implements HttpInterceptor {
@@ -24,7 +25,7 @@ export class RequestInterceptor implements HttpInterceptor {
         catchError((err) => {
           this._loadingService.setLoading(false, req.url);
           // this._loadingService.dismiss();
-          return err;
+          return throwError(() => err);
         }),
         map<HttpEvent<any>, any>((evt: HttpEvent<any>) => {
           /*if (evt instanceof HttpResponse) {
