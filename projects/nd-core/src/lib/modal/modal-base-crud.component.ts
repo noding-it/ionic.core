@@ -6,6 +6,8 @@ import {AlertService} from '../services/alert.service';
 import {TabellaDiBase} from '../interfaces/tabella-di-base';
 import {Sweetalert2Service} from '../services/sweetalert2.service';
 import {BaseCrudConfig} from "../interfaces/base-crud-config";
+import {PopoverService} from "../services/popover.service";
+import {IconPickerPopoverComponent} from "../popover/icon-picker-popover.component";
 
 @Component({
     selector: 'app-modal-base-crud',
@@ -37,6 +39,12 @@ import {BaseCrudConfig} from "../interfaces/base-crud-config";
                        [style.background]="localModel.color"
                        class="color-picker-style"/>-->
             </ion-item>
+          <ion-item *ngIf="modalConfig?.includeIcon">
+            <ion-label position="fixed">Icona:</ion-label>
+            <ion-icon [name]="(localModel.icon) ? localModel.icon : 'document'" class="ion-box center"
+                      (click)="this.openIconPopover($event)"
+                      style=" font-size: 16px !important"></ion-icon>
+          </ion-item>
             <ion-row>
                 <ion-col class="ion-text-center">
                     <ion-button color="success" (click)="save(null, $event)">{{modalConfig?.labelSaveButton}}</ion-button>
@@ -105,19 +113,21 @@ export class ModalBaseCrudComponent implements AfterViewInit {
 
     constructor(
         public modal: ModalService,
+        public popover: PopoverService,
         private _gs: GlobalService,
         private _alert: AlertService,
         private _params: NavParams,
         public changeDetectorRef: ChangeDetectorRef,
-        private _sweetAlert: Sweetalert2Service,
+        private _sweetAlert: Sweetalert2Service
     ) {
     }
 
     public modalConfig: BaseCrudConfig;
     public data: Array<TabellaDiBase> = [] as Array<TabellaDiBase>;
-    public localModel: { desc: string, color: string } = {
+    public localModel: { desc: string, color: string, icon: string } = {
         desc: undefined,
-        color: undefined
+        color: undefined,
+        icon: undefined
     };
 
     ngAfterViewInit() {
@@ -144,7 +154,11 @@ export class ModalBaseCrudComponent implements AfterViewInit {
                 this._sweetAlert.warning('Inserire una descrizione !');
                 return;
             }
-            const params = this.modalConfig.includeColor ? `${item.id},'${item.descrizione}','${item.colore}','${localStorage.getItem('token')}'` : `${item.id},'${item.descrizione}','${localStorage.getItem('token')}'`;
+            const params = (this.modalConfig.includeColor)
+              ? ((this.modalConfig.includeIcon) ? (`${item.id},'${item.descrizione}','${item.colore}','${item.icona}','${localStorage.getItem('token')}'`)
+              : (`${item.id},'${item.descrizione}','${item.colore}','${localStorage.getItem('token')}'`))
+              : ((this.modalConfig.includeIcon) ? (`${item.id},'${item.descrizione}','${item.icona}','${localStorage.getItem('token')}'`)
+              : (`${item.id},'${item.descrizione}','${localStorage.getItem('token')}'`));
             this._gs.callGateway(this.modalConfig.saveProcess, params).subscribe(data => {
                 if (data.hasOwnProperty('error')) {
                     this._sweetAlert.error(data.error);
@@ -157,7 +171,11 @@ export class ModalBaseCrudComponent implements AfterViewInit {
                 this._sweetAlert.warning('Inserire una descrizione !');
                 return;
             }
-            const params = this.modalConfig.includeColor ? `0,'${this.localModel.desc}','${this.localModel.color}','${localStorage.getItem('token')}'` : `0,'${this.localModel.desc}','${localStorage.getItem('token')}'`;
+            const params = (this.modalConfig.includeColor)
+              ? ((this.modalConfig.includeIcon) ? (`0,'${item.descrizione}','${item.colore}','${item.icona}','${localStorage.getItem('token')}'`)
+                : (`0,'${item.descrizione}','${item.colore}','${localStorage.getItem('token')}'`))
+              : ((this.modalConfig.includeIcon) ? (`0,'${item.descrizione}','${item.icona}','${localStorage.getItem('token')}'`)
+                : (`0,'${item.descrizione}','${localStorage.getItem('token')}'`));
             this._gs.callGateway(this.modalConfig.saveProcess, params).subscribe(data => {
                 if (data.hasOwnProperty('error')) {
                     this._sweetAlert.error(data.error);
@@ -173,6 +191,7 @@ export class ModalBaseCrudComponent implements AfterViewInit {
                 }
                 this.localModel.desc = undefined;
                 this.localModel.color = undefined;
+                this.localModel.icon = undefined;
             }, error => this._sweetAlert.error(error.message));
         }
     }
@@ -195,6 +214,15 @@ export class ModalBaseCrudComponent implements AfterViewInit {
 
     exit() {
         this.modal.dismiss(undefined);
+    }
+
+    openIconPopover($event): void {
+      this.popover.present($event, IconPickerPopoverComponent, '', 'color-picker-popover').then(
+        dataFromPopover => {
+          if (dataFromPopover.data && dataFromPopover.data.hasOwnProperty('icon')) {
+            this.localModel.icon = dataFromPopover.data.icon;
+          }
+        });
     }
 
 }

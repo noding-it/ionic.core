@@ -7,9 +7,10 @@ import {EnvironmentConfig} from "./interfaces/environment-config";
 import {FormsModule} from "@angular/forms";
 import {CommonModule} from "@angular/common";
 import {ModalPreviewComponent} from "./modal/modal-preview.component";
+import {IconPickerPopoverComponent} from "./popover/icon-picker-popover.component";
+import {ColorPickerModule} from "ngx-color-picker";
 import {PdfViewerModule} from "ng2-pdf-viewer";
-import {ColorPickerModule} from 'ngx-color-picker';
-import {NgxColorsModule} from 'ngx-colors';
+import {NgxColorsModule} from "ngx-colors";
 
 @NgModule({
   declarations: [
@@ -17,20 +18,22 @@ import {NgxColorsModule} from 'ngx-colors';
     ModalDescrizioneComponent,
     ModalSearchComponent,
     ModalPreviewComponent,
+    IconPickerPopoverComponent
   ],
-  imports: [
-    CommonModule,
-    IonicModule,
-    FormsModule,
-    ColorPickerModule,
-    PdfViewerModule,
-    NgxColorsModule,
-  ],
+    imports: [
+        CommonModule,
+        IonicModule,
+        FormsModule,
+        ColorPickerModule,
+        PdfViewerModule,
+        NgxColorsModule
+    ],
   exports: [
     ModalBaseCrudComponent,
     ModalDescrizioneComponent,
     ModalSearchComponent,
     ModalPreviewComponent,
+    IconPickerPopoverComponent
   ]
 })
 export class NdCoreModule {
