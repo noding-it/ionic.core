@@ -193,7 +193,7 @@ export class ModalBaseCrudComponent implements AfterViewInit {
                 }
                 this.localModel.desc = undefined;
                 this.localModel.color = undefined;
-                this.localModel.icon = undefined;
+                this.localModel.icona = undefined;
             }, error => this._sweetAlert.error(error.message));
         }
     }
