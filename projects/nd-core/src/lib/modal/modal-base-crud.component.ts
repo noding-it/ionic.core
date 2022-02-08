@@ -152,54 +152,51 @@ export class ModalBaseCrudComponent implements AfterViewInit {
     }, error => this._sweetAlert.error(error.message));
   }
 
-  save(item: TabellaDiBase, event) {
-    event.stopPropagation();
-    if (item) {
-      if (!item.descrizione) {
-        this._sweetAlert.warning('Inserire una descrizione !');
-        return;
-      }
-      const params = (this.modalConfig.includeColor)
-        ? ((this.modalConfig.includeIcon) ? (`${item.id},'${item.descrizione}','${item.colore}','${item.icona}','${localStorage.getItem('token')}'`)
-          : (`${item.id},'${item.descrizione}','${item.colore}','${localStorage.getItem('token')}'`))
-        : ((this.modalConfig.includeIcon) ? (`${item.id},'${item.descrizione}','${item.icona}','${localStorage.getItem('token')}'`)
-          : (`${item.id},'${item.descrizione}','${localStorage.getItem('token')}'`));
-      this._gs.callGateway(this.modalConfig.saveProcess, params).subscribe(data => {
-        if (data.hasOwnProperty('error')) {
-          this._sweetAlert.error(data.error);
-          return;
+    save(item: TabellaDiBase, event) {
+        event.stopPropagation();
+        if (item) {
+            if (!item.descrizione) {
+                this._sweetAlert.warning('Inserire una descrizione !');
+                return;
+            }
+            console.log(this.modalConfig);
+            const params = (this.modalConfig.includeColor) ? ((this.modalConfig.includeIcon) ? (`${item.id},'${item.descrizione}','${item.colore}','${item.icona}','${localStorage.getItem('token')}'`) : (`${item.id},'${item.descrizione}','${item.colore}','${localStorage.getItem('token')}'`)) : ((this.modalConfig.includeIcon) ? (`${item.id},'${item.descrizione}','${item.icona}','${localStorage.getItem('token')}'`) : (`${item.id},'${item.descrizione}','${localStorage.getItem('token')}'`));
+            this._gs.callGateway(this.modalConfig.saveProcess, params).subscribe(data => {
+                if (data.hasOwnProperty('error')) {
+                    this._sweetAlert.error(data.error);
+                    return;
+                }
+                this.list();
+            }, error => this._sweetAlert.error(error.message));
+        } else {
+            if (!this.localModel.desc) {
+                this._sweetAlert.warning('Inserire una descrizione !');
+                return;
+            }
+            const params = (this.modalConfig.includeColor)
+              ? ((this.modalConfig.includeIcon) ? (`0,'${item.descrizione}','${item.colore}','${item.icona}','${localStorage.getItem('token')}'`)
+                : (`0,'${item.descrizione}','${item.colore}','${localStorage.getItem('token')}'`))
+              : ((this.modalConfig.includeIcon) ? (`0,'${item.descrizione}','${item.icona}','${localStorage.getItem('token')}'`)
+                : (`0,'${item.descrizione}','${localStorage.getItem('token')}'`));
+            this._gs.callGateway(this.modalConfig.saveProcess, params).subscribe(data => {
+                if (data.hasOwnProperty('error')) {
+                    this._sweetAlert.error(data.error);
+                    return;
+                }
+                this.list();
+                if (this.modalConfig?.dismissOnSave) {
+                    // per avere l'id in output è necessario settare la stored procedure per inviare il recordset giusto
+                    this.modal.dismiss({
+                        id: (data.recordset[0].out_id) ? data.recordset[0].out_id : undefined,
+                        descrizione: this.localModel.desc
+                    });
+                }
+                this.localModel.desc = undefined;
+                this.localModel.color = undefined;
+                this.localModel.icon = undefined;
+            }, error => this._sweetAlert.error(error.message));
         }
-        this.list();
-      }, error => this._sweetAlert.error(error.message));
-    } else {
-      if (!this.localModel.desc) {
-        this._sweetAlert.warning('Inserire una descrizione !');
-        return;
-      }
-      const params = (this.modalConfig.includeColor)
-        ? ((this.modalConfig.includeIcon) ? (`0,'${item.descrizione}','${item.colore}','${item.icona}','${localStorage.getItem('token')}'`)
-          : (`0,'${item.descrizione}','${item.colore}','${localStorage.getItem('token')}'`))
-        : ((this.modalConfig.includeIcon) ? (`0,'${item.descrizione}','${item.icona}','${localStorage.getItem('token')}'`)
-          : (`0,'${item.descrizione}','${localStorage.getItem('token')}'`));
-      this._gs.callGateway(this.modalConfig.saveProcess, params).subscribe(data => {
-        if (data.hasOwnProperty('error')) {
-          this._sweetAlert.error(data.error);
-          return;
-        }
-        this.list();
-        if (this.modalConfig?.dismissOnSave) {
-          // per avere l'id in output è necessario settare la stored procedure per inviare il recordset giusto
-          this.modal.dismiss({
-            id: (data.recordset[0].out_id) ? data.recordset[0].out_id : undefined,
-            descrizione: this.localModel.desc,
-          });
-        }
-        this.localModel.desc = undefined;
-        this.localModel.color = undefined;
-        this.localModel.icona = undefined;
-      }, error => this._sweetAlert.error(error.message));
     }
-  }
 
   delete(item: TabellaDiBase, event) {
     event.stopPropagation();
