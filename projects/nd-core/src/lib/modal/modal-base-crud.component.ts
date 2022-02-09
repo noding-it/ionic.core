@@ -63,7 +63,7 @@ import {IconPickerPopoverComponent} from '../popover/icon-picker-popover.compone
                           ngx-colors-trigger cpOutputFormat="hex"
                           [style.background]="item.colore"
                           [(ngModel)]="item.colore"
-                          (ngModelChange)="save(item, $event)">
+                          (change)="save(item, $event)">
               </ngx-colors>
               <!--<span style="width: 100% !important;height: 100% !important;cursor: pointer !important;"
                     [cpDisableInput]="true"
@@ -154,7 +154,7 @@ export class ModalBaseCrudComponent implements AfterViewInit {
   }
 
   save(item: TabellaDiBase, event) {
-    event.stopPropagation();
+    // event.stopPropagation();
     if (item) {
       if (!item.descrizione) {
         this._sweetAlert.warning('Inserire una descrizione !');
