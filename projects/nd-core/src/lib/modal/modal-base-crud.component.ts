@@ -41,7 +41,7 @@ import {IconPickerPopoverComponent} from '../popover/icon-picker-popover.compone
       </ion-item>
       <ion-item *ngIf="modalConfig?.includeIcon">
         <ion-label position="fixed">Icona:</ion-label>
-        <ion-icon [name]="(localModel.icona) ? localModel.icona : 'document'" class="ion-box center"
+        <ion-icon [name]="localModel.icona" class="ion-box center"
                   (click)="openIconPopover($event)"
                   style=" font-size: 31px !important"></ion-icon>
       </ion-item>
@@ -63,7 +63,7 @@ import {IconPickerPopoverComponent} from '../popover/icon-picker-popover.compone
                           ngx-colors-trigger cpOutputFormat="hex"
                           [style.background]="item.colore"
                           [(ngModel)]="item.colore"
-                          (input)="saveColor($event, item)">
+                          (change)="saveColor($event, item)">
               </ngx-colors>
               <!--<span style="width: 100% !important;height: 100% !important;cursor: pointer !important;"
                     [cpDisableInput]="true"
