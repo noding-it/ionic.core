@@ -59,12 +59,12 @@ import {IconPickerPopoverComponent} from '../popover/icon-picker-popover.compone
           <ion-row style="width: 100%">
             <!--<ion-col size="11" style="overflow: hidden;white-space: normal;" >{{item.descrizione}}</ion-col>-->
             <ion-col size="1" *ngIf="modalConfig?.includeColor" class="center">
-                <ngx-colors class="ion-box" style="width: 100%;"
-                            ngx-colors-trigger cpOutputFormat="hex"
-                            [style.background]="item.colore"
-                            [(ngModel)]="item.colore"
-                            (focusout)="saveColor($event, item)">
-                </ngx-colors>
+              <ngx-colors class="ion-box" style="width: 100%;"
+                          ngx-colors-trigger cpOutputFormat="hex"
+                          [style.background]="item.colore"
+                          [(ngModel)]="item.colore"
+                          (click)="saveColor($event, item)">
+              </ngx-colors>
               <!--<span style="width: 100% !important;height: 100% !important;cursor: pointer !important;"
                     [cpDisableInput]="true"
                     cpDialogDisplay="inline"
@@ -86,7 +86,7 @@ import {IconPickerPopoverComponent} from '../popover/icon-picker-popover.compone
             <ion-col (click)="changeDetectorRef.detectChanges()"
                      size="{{11 - (modalConfig?.includeColor ? 1 : 0) - (modalConfig?.includeIcon ? 1 : 0)}}"
                      style="overflow: hidden;white-space: normal;">
-              <ion-input [(ngModel)]="item.descrizione" (ionBlur)="save(item, $event)"
+              <ion-input [(ngModel)]="item.descrizione"
                          (keydown.enter)="save(item, $event)"></ion-input>
             </ion-col>
             <ion-col size="1" class="ion-text-center">
@@ -236,9 +236,10 @@ export class ModalBaseCrudComponent implements AfterViewInit {
   }
 
   saveColor(event, item: TabellaDiBase): void {
-    event.stopPropagation();
-    item.colore = event;
-    this.save(item);
+    if (typeof event === "string") {
+      item.colore = event;
+      this.save(item);
+    }
   }
 
 }
