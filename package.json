@@ -8,6 +8,7 @@
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
+
     "lint": "ng lint",
     "e2e": "ng e2e",
     "adduser": "npm adduser --registry https://registry.noding.it:4873",
