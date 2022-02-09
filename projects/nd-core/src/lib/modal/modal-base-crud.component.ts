@@ -63,7 +63,7 @@ import {IconPickerPopoverComponent} from '../popover/icon-picker-popover.compone
                           ngx-colors-trigger cpOutputFormat="hex"
                           [style.background]="item.colore"
                           [(ngModel)]="item.colore"
-                          (change)="save(item, $event)">
+                          (change)="saveColor($event, item)">
               </ngx-colors>
               <!--<span style="width: 100% !important;height: 100% !important;cursor: pointer !important;"
                     [cpDisableInput]="true"
@@ -153,8 +153,10 @@ export class ModalBaseCrudComponent implements AfterViewInit {
     }, error => this._sweetAlert.error(error.message));
   }
 
-  save(item: TabellaDiBase, event) {
-    // event.stopPropagation();
+  save(item: TabellaDiBase, event?) {
+       if (event) {
+         event.stopPropagation();
+       }
     if (item) {
       if (!item.descrizione) {
         this._sweetAlert.warning('Inserire una descrizione !');
@@ -226,9 +228,13 @@ export class ModalBaseCrudComponent implements AfterViewInit {
         }
         if (dataFromPopover.data && dataFromPopover.data.hasOwnProperty('icon') && item) {
           item.icona = dataFromPopover.data.icon;
-          this.save(item, $event)
+          this.save(item)
         }
       });
+  }
+  saveColor(color: string, item: TabellaDiBase): void{
+    item.colore = color;
+    this.save(item);
   }
 
 }
