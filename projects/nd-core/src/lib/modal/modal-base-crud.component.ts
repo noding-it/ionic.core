@@ -62,7 +62,8 @@ import {IconPickerPopoverComponent} from '../popover/icon-picker-popover.compone
               <ngx-colors class="ion-box" style="width: 100%;"
                           ngx-colors-trigger cpOutputFormat="hex"
                           [style.background]="item.colore"
-                          [(ngModel)]="item.colore">
+                          [(ngModel)]="item.colore"
+                          (ngModelChange)="save(item, $event)">
               </ngx-colors>
               <!--<span style="width: 100% !important;height: 100% !important;cursor: pointer !important;"
                     [cpDisableInput]="true"
@@ -229,6 +230,7 @@ export class ModalBaseCrudComponent implements AfterViewInit {
         }
         if (dataFromPopover.data && dataFromPopover.data.hasOwnProperty('icon') && item) {
           item.icona = dataFromPopover.data.icon;
+          this.save(item, $event)
         }
       });
   }
