@@ -22,7 +22,7 @@ import {IconPickerPopoverComponent} from '../popover/icon-picker-popover.compone
       </ion-item>
       <ion-item *ngIf="modalConfig?.includeColor">
         <ion-label position="fixed">Colore:</ion-label>
-        <ngx-colors class="ion-box" style="width: 34px"
+        <ngx-colors class="ion-box" style="width: 100%;"
                     ngx-colors-trigger cpOutputFormat="hex"
                     [style.background]="localModel.color"
                     [(ngModel)]="localModel.color">
@@ -63,7 +63,7 @@ import {IconPickerPopoverComponent} from '../popover/icon-picker-popover.compone
                           ngx-colors-trigger cpOutputFormat="hex"
                           [style.background]="item.colore"
                           [(ngModel)]="item.colore"
-                          (change)="saveColor($event, item)">
+                          (input)="saveColor($event, item)">
               </ngx-colors>
               <!--<span style="width: 100% !important;height: 100% !important;cursor: pointer !important;"
                     [cpDisableInput]="true"
@@ -80,7 +80,7 @@ import {IconPickerPopoverComponent} from '../popover/icon-picker-popover.compone
             </ion-col>
             <ion-col size="1" *ngIf="modalConfig?.includeIcon" class="center">
               <ion-icon [name]="(item.icona) ? item.icona : 'document'" class="ion-box center"
-                        (click)="openIconPopover($event, item)"
+                        (click)="openIconPopover($event)"
                         style=" font-size: 31px !important"></ion-icon>
             </ion-col>
             <ion-col (click)="changeDetectorRef.detectChanges()"
@@ -120,10 +120,10 @@ export class ModalBaseCrudComponent implements AfterViewInit {
   constructor(
     public modal: ModalService,
     public popover: PopoverService,
-    public changeDetectorRef: ChangeDetectorRef,
     private _gs: GlobalService,
     private _alert: AlertService,
     private _params: NavParams,
+    public changeDetectorRef: ChangeDetectorRef,
     private _sweetAlert: Sweetalert2Service,
   ) {
   }
@@ -154,14 +154,15 @@ export class ModalBaseCrudComponent implements AfterViewInit {
   }
 
   save(item: TabellaDiBase, event?) {
-       if (event) {
-         event.stopPropagation();
-       }
+    if (event) {
+      event.stopPropagation()
+    }
     if (item) {
       if (!item.descrizione) {
         this._sweetAlert.warning('Inserire una descrizione !');
         return;
       }
+      console.log(this.modalConfig);
       const params = (this.modalConfig.includeColor) ? ((this.modalConfig.includeIcon) ? (`${item.id},'${item.descrizione}','${item.colore}','${item.icona}','${localStorage.getItem('token')}'`) : (`${item.id},'${item.descrizione}','${item.colore}','${localStorage.getItem('token')}'`)) : ((this.modalConfig.includeIcon) ? (`${item.id},'${item.descrizione}','${item.icona}','${localStorage.getItem('token')}'`) : (`${item.id},'${item.descrizione}','${localStorage.getItem('token')}'`));
       this._gs.callGateway(this.modalConfig.saveProcess, params).subscribe(data => {
         if (data.hasOwnProperty('error')) {
@@ -232,7 +233,8 @@ export class ModalBaseCrudComponent implements AfterViewInit {
         }
       });
   }
-  saveColor(color: string, item: TabellaDiBase): void{
+
+  saveColor(color: string, item: TabellaDiBase): void {
     item.colore = color;
     this.save(item);
   }
