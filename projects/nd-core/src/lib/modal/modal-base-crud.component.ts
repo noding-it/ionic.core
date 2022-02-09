@@ -234,8 +234,9 @@ export class ModalBaseCrudComponent implements AfterViewInit {
       });
   }
 
-  saveColor(color: string, item: TabellaDiBase): void {
-    item.colore = color;
+  saveColor(event , item: TabellaDiBase): void {
+    event.stopPropagation();
+    item.colore = event;
     this.save(item);
   }
 
