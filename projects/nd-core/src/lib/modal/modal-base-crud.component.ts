@@ -22,7 +22,7 @@ import {IconPickerPopoverComponent} from '../popover/icon-picker-popover.compone
       </ion-item>
       <ion-item *ngIf="modalConfig?.includeColor">
         <ion-label position="fixed">Colore:</ion-label>
-        <ngx-colors class="ion-box" style="width: 31px"
+        <ngx-colors class="ion-box" style="width: 34px"
                     ngx-colors-trigger cpOutputFormat="hex"
                     [style.background]="localModel.color"
                     [(ngModel)]="localModel.color">
@@ -63,7 +63,7 @@ import {IconPickerPopoverComponent} from '../popover/icon-picker-popover.compone
                           ngx-colors-trigger cpOutputFormat="hex"
                           [style.background]="item.colore"
                           [(ngModel)]="item.colore"
-                          (change)="save(item, $event)">
+                          (ngModelChange)="save(item, $event)">
               </ngx-colors>
               <!--<span style="width: 100% !important;height: 100% !important;cursor: pointer !important;"
                     [cpDisableInput]="true"
@@ -141,8 +141,6 @@ export class ModalBaseCrudComponent implements AfterViewInit {
     // this.modalConfig.dismissOnSave = false;
     this.modalConfig = {...this._params.data} as BaseCrudConfig;
     this.list();
-    document.getElementById('my-select').addEventListener('change', function() {
-    });
   }
 
   list() {
