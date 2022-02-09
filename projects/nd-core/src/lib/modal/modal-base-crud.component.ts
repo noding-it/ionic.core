@@ -59,12 +59,14 @@ import {IconPickerPopoverComponent} from '../popover/icon-picker-popover.compone
           <ion-row style="width: 100%">
             <!--<ion-col size="11" style="overflow: hidden;white-space: normal;" >{{item.descrizione}}</ion-col>-->
             <ion-col size="1" *ngIf="modalConfig?.includeColor" class="center">
-              <ngx-colors class="ion-box" style="width: 100%;"
-                          ngx-colors-trigger cpOutputFormat="hex"
-                          [style.background]="item.colore"
-                          [(ngModel)]="item.colore"
-                          (click)="saveColor($event, item)">
-              </ngx-colors>
+              <div class="center ion-box" (click)="allowChangeColor()">
+                <ngx-colors style="width: 100%; border-radius: 10px !important;"
+                            ngx-colors-trigger cpOutputFormat="hex"
+                            [style.background]="item.colore"
+                            [(ngModel)]="item.colore"
+                            (ngModelChange)="saveColor($event, item)">
+                </ngx-colors>
+              </div>
               <!--<span style="width: 100% !important;height: 100% !important;cursor: pointer !important;"
                     [cpDisableInput]="true"
                     cpDialogDisplay="inline"
@@ -128,6 +130,7 @@ export class ModalBaseCrudComponent implements AfterViewInit {
   ) {
   }
 
+  public colorAllowed = false;
   public modalConfig: BaseCrudConfig;
   public data: Array<TabellaDiBase> = [] as Array<TabellaDiBase>;
   public localModel: { desc: string, color: string, icona: string } = {
@@ -150,13 +153,13 @@ export class ModalBaseCrudComponent implements AfterViewInit {
         return;
       }
       this.data = data.recordset ? [...data.recordset] : [];
-      this.data.forEach((elem => (elem.colore === null) ? elem.colore = undefined : elem.colore));
+      this.colorAllowed = false;
     }, error => this._sweetAlert.error(error.message));
   }
 
   save(item: TabellaDiBase, event?) {
     if (event) {
-      event.stopPropagation()
+      event.stopPropagation();
     }
     if (item) {
       if (!item.descrizione) {
@@ -192,7 +195,7 @@ export class ModalBaseCrudComponent implements AfterViewInit {
           // per avere l'id in output è necessario settare la stored procedure per inviare il recordset giusto
           this.modal.dismiss({
             id: (data.recordset[0].out_id) ? data.recordset[0].out_id : undefined,
-            descrizione: this.localModel.desc
+            descrizione: this.localModel.desc,
           });
         }
         this.localModel.desc = undefined;
@@ -230,16 +233,19 @@ export class ModalBaseCrudComponent implements AfterViewInit {
         }
         if (dataFromPopover.data && dataFromPopover.data.hasOwnProperty('icon') && fromList) {
           item.icona = dataFromPopover.data.icon;
-          this.save(item)
+          this.save(item);
         }
       });
   }
 
+  allowChangeColor(): void {
+    this.colorAllowed = true;
+  }
+
   saveColor(event, item: TabellaDiBase): void {
-    if (typeof event === "string") {
+    if (this.colorAllowed) {
       item.colore = event;
       this.save(item);
     }
   }
-
 }
