@@ -16,47 +16,35 @@ import {IconPickerPopoverComponent} from '../popover/icon-picker-popover.compone
       <ion-toolbar>
         <ion-title class="ion-text-center">{{modalConfig?.title}}</ion-title>
       </ion-toolbar>
-      <ion-row>
-        <ion-col sizeMd="12">
-          <ion-item>
-            <ion-label position="fixed">{{modalConfig?.labelDesc}}:</ion-label>
-            <ion-input type="text" [(ngModel)]="localModel.desc" (keydown.enter)="save(null, $event)"
-                       required></ion-input>
-          </ion-item>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col sizeMd="3">
-          <ion-item *ngIf="modalConfig?.includeColor">
-            <ion-label position="fixed">Colore:</ion-label>
-            <ngx-colors class="ion-box" style="width: 100%;"
-                        ngx-colors-trigger cpOutputFormat="hex"
-                        [style.background]="localModel.color"
-                        [(ngModel)]="localModel.color">
-            </ngx-colors>
-            <!--<input cpPosition="bottom"
-                   [cpDisableInput]="true"
-                   cpOutputFormat="hex"
-                   [cpCancelButton]="true"
-                   cpCancelButtonText="Annulla"
-                   [cpOKButton]="true"
-                   cpOKButtonText="Scegli"
-                   [(ngModel)]="localModel.color"
-                   [(colorPicker)]="localModel.color"
-                   [style.background]="localModel.color"
-                   class="color-picker-style"/>-->
-          </ion-item>
-        </ion-col>
-        <ion-col sizeMd="6"></ion-col>
-        <ion-col sizeMd="3">
-          <ion-item *ngIf="modalConfig?.includeIcon">
-            <ion-label position="fixed">Icona:</ion-label>
-            <ion-icon [name]="(localModel.icona) ? localModel.icona : 'document'" class="ion-box center"
-                      (click)="openIconPopover($event)"
-                      style=" font-size: 31px !important"></ion-icon>
-          </ion-item>
-        </ion-col>
-      </ion-row>
+      <ion-item>
+        <ion-label position="fixed">{{modalConfig?.labelDesc}}:</ion-label>
+        <ion-input type="text" [(ngModel)]="localModel.desc" (keydown.enter)="save(null, $event)" required></ion-input>
+      </ion-item>
+      <ion-item *ngIf="modalConfig?.includeColor">
+        <ion-label position="fixed">Colore:</ion-label>
+        <ngx-colors class="ion-box" style="width: 31px"
+                    ngx-colors-trigger cpOutputFormat="hex"
+                    [style.background]="localModel.color"
+                    [(ngModel)]="localModel.color">
+        </ngx-colors>
+        <!--<input cpPosition="bottom"
+               [cpDisableInput]="true"
+               cpOutputFormat="hex"
+               [cpCancelButton]="true"
+               cpCancelButtonText="Annulla"
+               [cpOKButton]="true"
+               cpOKButtonText="Scegli"
+               [(ngModel)]="localModel.color"
+               [(colorPicker)]="localModel.color"
+               [style.background]="localModel.color"
+               class="color-picker-style"/>-->
+      </ion-item>
+      <ion-item *ngIf="modalConfig?.includeIcon">
+        <ion-label position="fixed">Icona:</ion-label>
+        <ion-icon [name]="(localModel.icona) ? localModel.icona : 'document'" class="ion-box center"
+                  (click)="openIconPopover($event)"
+                  style=" font-size: 31px !important"></ion-icon>
+      </ion-item>
       <ion-row>
         <ion-col class="ion-text-center">
           <ion-button color="success" (click)="save(null, $event)">{{modalConfig?.labelSaveButton}}</ion-button>
@@ -75,7 +63,7 @@ import {IconPickerPopoverComponent} from '../popover/icon-picker-popover.compone
                           ngx-colors-trigger cpOutputFormat="hex"
                           [style.background]="item.colore"
                           [(ngModel)]="item.colore"
-                          (input)="save(item, $event)">
+                          (change)="save(item, $event)">
               </ngx-colors>
               <!--<span style="width: 100% !important;height: 100% !important;cursor: pointer !important;"
                     [cpDisableInput]="true"
@@ -153,6 +141,8 @@ export class ModalBaseCrudComponent implements AfterViewInit {
     // this.modalConfig.dismissOnSave = false;
     this.modalConfig = {...this._params.data} as BaseCrudConfig;
     this.list();
+    document.getElementById('my-select').addEventListener('change', function() {
+    });
   }
 
   list() {
@@ -238,7 +228,7 @@ export class ModalBaseCrudComponent implements AfterViewInit {
         }
         if (dataFromPopover.data && dataFromPopover.data.hasOwnProperty('icon') && item) {
           item.icona = dataFromPopover.data.icon;
-          // this.save(item, $event)
+          this.save(item, $event)
         }
       });
   }
