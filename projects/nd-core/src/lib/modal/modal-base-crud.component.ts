@@ -41,7 +41,7 @@ import {IconPickerPopoverComponent} from '../popover/icon-picker-popover.compone
       </ion-item>
       <ion-item *ngIf="modalConfig?.includeIcon">
         <ion-label position="fixed">Icona:</ion-label>
-        <ion-icon [name]="localModel.icona" class="ion-box center"
+        <ion-icon [name]="(localModel.icona) ? localModel.icona : 'document'" class="ion-box center"
                   (click)="openIconPopover($event)"
                   style=" font-size: 31px !important"></ion-icon>
       </ion-item>
@@ -79,7 +79,7 @@ import {IconPickerPopoverComponent} from '../popover/icon-picker-popover.compone
               </span>-->
             </ion-col>
             <ion-col size="1" *ngIf="modalConfig?.includeIcon" class="center">
-              <ion-icon [name]="(item.icona) ? item.icona : 'document'" class="ion-box center"
+              <ion-icon [name]="item.icona" class="ion-box center"
                         (click)="openIconPopover($event)"
                         style=" font-size: 31px !important"></ion-icon>
             </ion-col>
