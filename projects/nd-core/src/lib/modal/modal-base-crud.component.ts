@@ -42,7 +42,7 @@ import {IconPickerPopoverComponent} from '../popover/icon-picker-popover.compone
       <ion-item *ngIf="modalConfig?.includeIcon">
         <ion-label position="fixed">Icona:</ion-label>
         <ion-icon [name]="(localModel.icona) ? localModel.icona : 'document'" class="ion-box center"
-                  (click)="openIconPopover($event)"
+                  (click)="openIconPopover($event, false)"
                   style=" font-size: 31px !important"></ion-icon>
       </ion-item>
       <ion-row>
@@ -59,12 +59,12 @@ import {IconPickerPopoverComponent} from '../popover/icon-picker-popover.compone
           <ion-row style="width: 100%">
             <!--<ion-col size="11" style="overflow: hidden;white-space: normal;" >{{item.descrizione}}</ion-col>-->
             <ion-col size="1" *ngIf="modalConfig?.includeColor" class="center">
-              <ngx-colors class="ion-box" style="width: 100%;"
-                          ngx-colors-trigger cpOutputFormat="hex"
-                          [style.background]="item.colore"
-                          [(ngModel)]="item.colore"
-                          (change)="saveColor($event, item)">
-              </ngx-colors>
+                <ngx-colors class="ion-box" style="width: 100%;"
+                            ngx-colors-trigger cpOutputFormat="hex"
+                            [style.background]="item.colore"
+                            [(ngModel)]="item.colore"
+                            (focusout)="saveColor($event, item)">
+                </ngx-colors>
               <!--<span style="width: 100% !important;height: 100% !important;cursor: pointer !important;"
                     [cpDisableInput]="true"
                     cpDialogDisplay="inline"
@@ -80,7 +80,7 @@ import {IconPickerPopoverComponent} from '../popover/icon-picker-popover.compone
             </ion-col>
             <ion-col size="1" *ngIf="modalConfig?.includeIcon" class="center">
               <ion-icon [name]="item.icona" class="ion-box center"
-                        (click)="openIconPopover($event)"
+                        (click)="openIconPopover($event, true, item)"
                         style=" font-size: 31px !important"></ion-icon>
             </ion-col>
             <ion-col (click)="changeDetectorRef.detectChanges()"
@@ -150,6 +150,7 @@ export class ModalBaseCrudComponent implements AfterViewInit {
         return;
       }
       this.data = data.recordset ? [...data.recordset] : [];
+      this.data.forEach((elem => (elem.colore === null) ? elem.colore = undefined : elem.colore));
     }, error => this._sweetAlert.error(error.message));
   }
 
@@ -221,20 +222,20 @@ export class ModalBaseCrudComponent implements AfterViewInit {
     this.modal.dismiss(undefined);
   }
 
-  openIconPopover($event, item?: TabellaDiBase): void {
+  openIconPopover($event, fromList: boolean, item?: TabellaDiBase): void {
     this.popover.present($event, IconPickerPopoverComponent, '', 'color-picker-popover').then(
       dataFromPopover => {
-        if (dataFromPopover.data && dataFromPopover.data.hasOwnProperty('icon') && !item) {
+        if (dataFromPopover.data && dataFromPopover.data.hasOwnProperty('icon') && !fromList) {
           this.localModel.icona = dataFromPopover.data.icon;
         }
-        if (dataFromPopover.data && dataFromPopover.data.hasOwnProperty('icon') && item) {
+        if (dataFromPopover.data && dataFromPopover.data.hasOwnProperty('icon') && fromList) {
           item.icona = dataFromPopover.data.icon;
           this.save(item)
         }
       });
   }
 
-  saveColor(event , item: TabellaDiBase): void {
+  saveColor(event, item: TabellaDiBase): void {
     event.stopPropagation();
     item.colore = event;
     this.save(item);
