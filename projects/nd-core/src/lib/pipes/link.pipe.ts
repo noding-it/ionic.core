@@ -5,6 +5,6 @@ import Autolinker, { AutolinkerConfig } from 'autolinker';
 
 export class LinkPipe implements PipeTransform {
     transform(value: string, options?: AutolinkerConfig): string {
-        return Autolinker.link(value, options);
+        return Autolinker.link(value, {...options, stripPrefix: false});
     }
 }
