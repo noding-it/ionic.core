@@ -3,4 +3,5 @@ export interface TabellaDiBase {
     descrizione: string;
     nome?: string;
     colore?: string;
+    icona?: string;
 }

@@ -117,7 +117,7 @@ export class ToolService {
   }
 
   public isTablet(): boolean {
-    return this._platform.is('tablet');
+    return this._platform.is('tablet') && !this._platform.is('desktop');
   }
 
   public isDesktopOrTablet(): boolean {

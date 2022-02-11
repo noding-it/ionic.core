@@ -3,10 +3,18 @@ export interface AppConfig {
     logged: boolean;
     settings: Impostazione[];
     ruotes: Ruote[];
-    appPages: any[];
+    appPages: Modulo[];
     language?: string;
 }
 
+export interface Modulo {
+  id: number;
+  title: string;
+  url: string;
+  icon: string;
+  color: string;
+  subMenu: Modulo[];
+}
 
 export interface Impostazione {
     id: number;

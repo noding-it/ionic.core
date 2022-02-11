@@ -5,10 +5,12 @@ import {ModalSearchComponent} from "./modal/modal-search.component";
 import {IonicModule} from "@ionic/angular";
 import {EnvironmentConfig} from "./interfaces/environment-config";
 import {FormsModule} from "@angular/forms";
-import {ColorPickerModule} from "ngx-color-picker";
 import {CommonModule} from "@angular/common";
 import {ModalPreviewComponent} from "./modal/modal-preview.component";
+import {IconPickerPopoverComponent} from "./popover/icon-picker-popover.component";
+import {ColorPickerModule} from "ngx-color-picker";
 import {PdfViewerModule} from "ng2-pdf-viewer";
+import {NgxColorsModule} from "ngx-colors";
 
 @NgModule({
   declarations: [
@@ -16,19 +18,22 @@ import {PdfViewerModule} from "ng2-pdf-viewer";
     ModalDescrizioneComponent,
     ModalSearchComponent,
     ModalPreviewComponent,
+    IconPickerPopoverComponent
   ],
-  imports: [
-    CommonModule,
-    IonicModule,
-    FormsModule,
-    ColorPickerModule,
-    PdfViewerModule,
-  ],
+    imports: [
+        CommonModule,
+        IonicModule,
+        FormsModule,
+        ColorPickerModule,
+        PdfViewerModule,
+        NgxColorsModule
+    ],
   exports: [
     ModalBaseCrudComponent,
     ModalDescrizioneComponent,
     ModalSearchComponent,
     ModalPreviewComponent,
+    IconPickerPopoverComponent
   ]
 })
 export class NdCoreModule {

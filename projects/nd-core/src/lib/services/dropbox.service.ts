@@ -88,4 +88,22 @@ export class DropboxService {
     }
   }
 
+  public openPreviewFromLink(link: string, fileName = '', fullSize = true): void {
+    let fileExtension = '';
+    if (fileName === '') {
+      fileExtension = link.split('?')[0].split('.').reverse()[0]; // esempio link dropbox => https://www.dropbox.com/s/rl1isbolbf8rsqr/kraken.png?dl=0&raw=1
+      fileName = `${link.split(fileExtension)[0].split('/').reverse()[0]}.${fileExtension}`;
+    } else {
+      fileExtension = fileName.split('.').reverse()[0];
+    }
+    if (this.supportedExtensionPreview.includes(fileExtension.toLowerCase())) {
+      const modalFolder = this._modalService.present(ModalPreviewComponent, {
+          name: fileName,
+          link,
+          type: fileExtension === 'pdf' ? 'pdf' : 'image', // trick per ora
+        }, (fullSize) ? 'sc-ion-archivio-full-screen-mobile' : 'sc-ion-archivio-middle-width',
+      );
+    }
+  }
+
 }

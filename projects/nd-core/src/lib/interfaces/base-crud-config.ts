@@ -11,5 +11,6 @@ export interface BaseCrudConfig {
     deleteProcess: string;
 
     includeColor: boolean;
+    includeIcon: boolean;
     dismissOnSave?: boolean;
 }

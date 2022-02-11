@@ -26,6 +26,8 @@ export * from './lib/modal/modal-descrizione.component';
 export * from './lib/modal/modal-preview.component';
 export * from './lib/modal/modal-search.component';
 
+export * from './lib/popover/icon-picker-popover.component';
+
 export * from './lib/services/alert.service';
 export * from './lib/services/aruba.service';
 export * from './lib/services/dropbox.service';
