@@ -229,6 +229,10 @@ export class ToolService {
     }
   }
 
+  public linkNavigateTo(link: string, method: '_top' | '_blank'): void {
+    window.open(link, method);
+  }
+
   public mailCallTo(contact: string, type: string, $event = null): void {
     // contact => phone number or e-mail
     // type => 'tel' or 'mailto'
