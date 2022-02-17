@@ -19,7 +19,7 @@ import {ModalService} from '../services/modal.service';
                         [src]="file?.link"
                         [render-text]="true"
                         [external-link-target]="'blank'"
-                        style="display: block;"
+                        style="display: block; height: 100%; width: 100%;"
             ></pdf-viewer>
           </ion-col>
         </ion-row>
