@@ -11,12 +11,12 @@
 
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "adduser": "npm adduser --registry https://registry.noding.it:4873",
+    "adduser": "npm adduser --registry http://192.168.121.52:4873",
     "nd:core:build": "ng build nd-core --configuration production",
-    "nd:core:publish": "cd dist/nd-core && npm publish --registry https://registry.noding.it:4873"
+    "nd:core:publish": "cd dist/nd-core && npm publish --registry http://192.168.121.52:4873"
   },
   "publishConfig": {
-    "registry": "https://registry.noding.it:4873"
+    "registry": "https://registry.myvirtualab.it:4873"
   },
   "private": true,
   "dependencies": {
