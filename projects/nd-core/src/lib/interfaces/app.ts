@@ -13,6 +13,7 @@ export interface Modulo {
   url: string;
   icon: string;
   color: string;
+  mobile: boolean;
   subMenu: Modulo[];
 }
 
