@@ -22,7 +22,7 @@ export class DropboxService {
   ) {
   }
 
-  public imageExtensions: Array<string> = ['.jpg', '.jpeg', '.jpe', '.jif', '.jfif', '.jfi', '.png', '.bmp', '.tif', '.tiff', '.gif', '.webp', '.heif', '.heic', '.dib', '.svg', '.svgz', '.eps', ];
+  public imageExtensions: Array<string> = ['.jpg', '.jpeg', '.jpe', '.jif', '.jfif', '.jfi', '.png', '.bmp', '.tif', '.tiff', '.gif', '.webp', '.heif', '.heic', '.dib', '.svg', '.svgz', '.eps'];
   public supportedExtensionPreview: Array<string> = ['.pdf', ...this.imageExtensions];
 
   public mimeToExt(mime: string): string {

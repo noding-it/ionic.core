@@ -1,6 +1,6 @@
 {
   "name": "@noding.ionic/core",
-  "version": "0.1.3",
+  "version": "0.1.5",
   "scripts": {
     "i:force": "npm i --force"
   },

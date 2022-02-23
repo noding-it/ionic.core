@@ -22,7 +22,16 @@ export class LoadingService {
     const loader = await this.loadingController.create({
       spinner: null,
       duration,
-      cssClass: 'custom-loading',
+      htmlAttributes: {
+        innerHTML: `
+          <div class="custom-loading">
+           <div class="sub-custom-loading">
+            <div>
+            </div>
+           </div>
+          </div>
+        `
+      },
     });
     await loader.present();
   }
