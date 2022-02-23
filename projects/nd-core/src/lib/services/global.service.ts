@@ -184,7 +184,8 @@ export class GlobalService {
                 title: m.title,
                 url: `/${m.path_menu}`,
                 icon: m.icon,
-                color: m.color
+                color: m.color,
+                mobile: m.mobile
               };
             })
         ];
@@ -201,7 +202,8 @@ export class GlobalService {
                     title: m.title,
                     url: `/${m.path_menu}`,
                     icon: m.icon,
-                    color: m.color
+                    color: m.color,
+                    mobile: m.mobile
                   };
                 })
             ];
