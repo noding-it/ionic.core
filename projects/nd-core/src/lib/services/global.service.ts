@@ -66,12 +66,12 @@ export class GlobalService {
     );
   }
 
-  public callPublicAPI(uri: string, loader = true, method: 'GET' | 'POST' = 'GET', params: any = null): Observable<any> {
+  public callMicroservice(uri: string, token?: string, loader = true, method: 'GET' | 'POST' = 'GET', params: any = null): Observable<any> {
     if (method === 'GET') {
       return this._http.get<any>(
         `${this._viewConfig.environment.apiGateway}${uri}`,
         {
-          headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', this._viewConfig.environment.TOKEN).set('showLoader', 'false')
+          headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', ((token) ? token : this._viewConfig.environment.TOKEN)).set('showLoader', 'false')
         }
       ).pipe(
         catchError(this.errorHandler),
@@ -81,7 +81,7 @@ export class GlobalService {
         `${this._viewConfig.environment.apiGateway}${uri}`,
         params,
         {
-          headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', this._viewConfig.environment.TOKEN).set('showLoader', 'false'),
+          headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', ((token) ? token : this._viewConfig.environment.TOKEN)).set('showLoader', 'false'),
         }
       ).pipe(
         catchError(this.errorHandler),
