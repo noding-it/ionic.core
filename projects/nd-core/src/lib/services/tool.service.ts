@@ -215,6 +215,10 @@ export class ToolService {
     });
   }
 
+  isTestMode(): boolean {
+    return window.location.hostname.indexOf('test.') > -1;
+  }
+
   public getBrowserResolution(): { width: number, height: number } {
     return {width: window.innerWidth || 0, height: window.innerHeight || 0};
   }
