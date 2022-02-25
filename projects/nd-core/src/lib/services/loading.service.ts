@@ -18,19 +18,18 @@ export class LoadingService {
    */
   public loadingMap: Map<string, boolean> = new Map<string, boolean>();
 
-  async present(duration = 2000): Promise<void> {
+  async present(duration = 2000, htmlLoader?: string): Promise<void> {
+    let templateLoader = htmlLoader || `
+          <div class="custom-loading">
+            <div class="background"></div>
+            <div class="active-element"></div>
+          </div>
+        `;
     const loader = await this.loadingController.create({
       spinner: null,
       duration,
       htmlAttributes: {
-        innerHTML: `
-          <div class="custom-loading">
-           <div class="sub-custom-loading">
-            <div>
-            </div>
-           </div>
-          </div>
-        `
+        innerHTML: templateLoader
       },
     });
     await loader.present();
