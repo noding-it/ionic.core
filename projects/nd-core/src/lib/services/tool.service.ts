@@ -247,8 +247,4 @@ export class ToolService {
     window.open(`${type}:${contact}`);
   }
 
-  public trimSpaces(str: string): string {
-    return str.replace(/^ *| *$|(?<=[^ ] +) +/g, '');
-  }
-
 }

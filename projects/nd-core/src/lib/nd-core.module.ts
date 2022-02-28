@@ -20,14 +20,14 @@ import {NgxColorsModule} from "ngx-colors";
     ModalPreviewComponent,
     IconPickerPopoverComponent
   ],
-    imports: [
-        CommonModule,
-        IonicModule,
-        FormsModule,
-        ColorPickerModule,
-        PdfViewerModule,
-        NgxColorsModule
-    ],
+  imports: [
+    CommonModule,
+    IonicModule,
+    FormsModule,
+    ColorPickerModule,
+    PdfViewerModule,
+    NgxColorsModule
+  ],
   exports: [
     ModalBaseCrudComponent,
     ModalDescrizioneComponent,
