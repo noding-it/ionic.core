@@ -11,7 +11,6 @@ import {IconPickerPopoverComponent} from "./popover/icon-picker-popover.componen
 import {ColorPickerModule} from "ngx-color-picker";
 import {PdfViewerModule} from "ng2-pdf-viewer";
 import {NgxColorsModule} from "ngx-colors";
-import {DynamicModule} from "@nestjs/common";
 
 @NgModule({
   declarations: [
@@ -45,7 +44,7 @@ export class NdCoreModule {
     }
   }
 
-  public static forRoot(environment: EnvironmentConfig): ModuleWithProviders<NdCoreModule> | DynamicModule {
+  public static forRoot(environment: EnvironmentConfig): ModuleWithProviders<NdCoreModule> {
     return {
       ngModule: NdCoreModule,
       providers: [{provide: 'CORE_ENVIRONMENT', useValue: environment}]
