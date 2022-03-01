@@ -1,10 +1,12 @@
 import {Inject, Injectable} from '@angular/core';
+import {Injectable as NestInjectable} from '@nestjs/common';
 import {Observable} from 'rxjs/internal/Observable';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {catchError} from 'rxjs/operators';
 import {GlobalService} from './global.service';
 import {EnvironmentConfig} from "../interfaces/environment-config";
 
+@NestInjectable()
 @Injectable({
   providedIn: 'root'
 })
