@@ -74,6 +74,14 @@ export class GlobalService {
           headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', ((token) ? token : this._viewConfig.environment.TOKEN)).set('showLoader', 'false')
         }
       ).pipe(
+        tap(resp => {
+          console.log(resp);
+          if (resp.error.http_code_name === 'Expired') {
+            if (this.logout()) {
+              window.location.reload();
+            }
+          }
+        }),
         catchError(this.errorHandler),
       );
     } else {
@@ -84,6 +92,14 @@ export class GlobalService {
           headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', ((token) ? token : this._viewConfig.environment.TOKEN)).set('showLoader', 'false'),
         }
       ).pipe(
+        tap(resp => {
+          console.log(resp);
+          if (resp.error.http_code_name === 'Expired') {
+            if (this.logout()) {
+              window.location.reload();
+            }
+          }
+        }),
         catchError(this.errorHandler),
       );
     }
