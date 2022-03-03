@@ -71,7 +71,7 @@ export class GlobalService {
       return this._http.get<any>(
         `${this._viewConfig.environment.apiGateway}${uri}`,
         {
-          headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', (token ? token : this._viewConfig.environment.TOKEN)).set('showLoader', 'false')
+          headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', (token ? `Bearer ${token}` : this._viewConfig.environment.TOKEN)).set('showLoader', 'false')
         }
       ).pipe(
         catchError(this.errorHandler),
@@ -81,7 +81,7 @@ export class GlobalService {
         `${this._viewConfig.environment.apiGateway}${uri}`,
         params,
         {
-          headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', (token ? token : this._viewConfig.environment.TOKEN)).set('showLoader', 'false'),
+          headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', (token ? `Bearer ${token}` : this._viewConfig.environment.TOKEN)).set('showLoader', 'false'),
         }
       ).pipe(
         catchError(this.errorHandler),
@@ -215,19 +215,8 @@ export class GlobalService {
 
   //////////////////////// ERROR ENDLER /////////////////////////
 
-  public errorHandler(error: Response | any) {
-    if (error instanceof Response && error?.status) {
-      if (error.status === 410) {
-        if (this.logout()) {
-          window.location.reload();
-        }
-      } else {
-        return throwError(error?.statusText || 'Errore Generico');
-      }
-    } else {
-      return throwError(error?.error?.error || error?.message || 'Errore Generico');
-    }
-
+  public errorHandler(error: HttpErrorResponse) {
+    return throwError(error?.error?.error || error?.message || 'Errore Generico');
   }
 
   ///////////////////////////////////////////////////////////////

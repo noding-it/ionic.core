@@ -3,6 +3,7 @@ import {Observable} from 'rxjs/internal/Observable';
 import {catchError, map} from 'rxjs/operators';
 import {LoadingService} from '../services/loading.service';
 import {Injectable} from '@angular/core';
+import {GlobalService} from "../services/global.service";
 import {throwError} from "rxjs";
 
 @Injectable({providedIn: 'root'})
@@ -10,6 +11,7 @@ export class RequestInterceptor implements HttpInterceptor {
 
   constructor(
     private _loadingService: LoadingService,
+    private _globalService: GlobalService,
   ) {
   }
 
@@ -25,7 +27,12 @@ export class RequestInterceptor implements HttpInterceptor {
         catchError((err) => {
           this._loadingService.setLoading(false, req.url);
           // this._loadingService.dismiss();
-          return throwError(() => err);
+          if (err.status === 410) {
+            if (this._globalService.logout()) {
+              window.location.reload();
+            }
+            return throwError(() => new Error(err));
+          }
         }),
         map<HttpEvent<any>, any>((evt: HttpEvent<any>) => {
           /*if (evt instanceof HttpResponse) {
