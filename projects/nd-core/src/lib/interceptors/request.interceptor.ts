@@ -1,10 +1,17 @@
-import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse} from '@angular/common/http';
+import {
+  HttpErrorResponse,
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
+  HttpResponse
+} from '@angular/common/http';
 import {Observable} from 'rxjs/internal/Observable';
 import {catchError, map} from 'rxjs/operators';
 import {LoadingService} from '../services/loading.service';
 import {Injectable} from '@angular/core';
 import {GlobalService} from "../services/global.service";
-import {throwError} from "rxjs";
+import {of, throwError} from "rxjs";
 
 @Injectable({providedIn: 'root'})
 export class RequestInterceptor implements HttpInterceptor {
@@ -24,20 +31,25 @@ export class RequestInterceptor implements HttpInterceptor {
 
     return next.handle(req)
       .pipe(
-        catchError((err) => {
+        /*catchError((err) => {
           this._loadingService.setLoading(false, req.url);
           // this._loadingService.dismiss();
           if (err.status === 410) {
             if (this._globalService.logout()) {
               window.location.reload();
             }
-            return throwError(() => new Error(err));
+            return throwError(err);
           }
-        }),
+        }),*/
         map<HttpEvent<any>, any>((evt: HttpEvent<any>) => {
           /*if (evt instanceof HttpResponse) {
               this._loadingService.dismiss();
           }*/
+          if (evt instanceof HttpErrorResponse && evt.status === 410) {
+            if (this._globalService.logout()) {
+              window.location.reload();
+            }
+          }
           if (evt instanceof HttpResponse && req.headers.get('showLoader') !== 'false') {
             this._loadingService.setLoading(false, req.url);
           }

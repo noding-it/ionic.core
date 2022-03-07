@@ -216,6 +216,9 @@ export class GlobalService {
   //////////////////////// ERROR ENDLER /////////////////////////
 
   public errorHandler(error: HttpErrorResponse) {
+    if (error?.error?.error?.text) {
+      return throwError(JSON.parse(error?.error?.error?.text));
+    }
     return throwError(error?.error?.error || error?.message || 'Errore Generico');
   }
 
