@@ -188,7 +188,7 @@ export class ToolService {
 
   public downloadFileFromLink(url: string, filename: string): void {
     const a = document.createElement('a');
-    a.href = url;
+    a.href = url.indexOf('dropbox.com') > -1 ? `${url}&dl=1` : url;
     a.setAttribute('download', filename);
     a.click();
   }
