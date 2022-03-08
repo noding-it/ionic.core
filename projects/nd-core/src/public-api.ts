@@ -11,7 +11,9 @@ export * from './lib/guards/auth.guard';
 export * from './lib/guards/admin.guard';
 export * from './lib/guards/route-check.guard';
 
+export * from './lib/interceptors/error.interceptor';
 export * from './lib/interceptors/request.interceptor';
+export * from './lib/interceptors/queue.interceptor';
 
 export * from './lib/modal/modal-base-crud.component';
 export * from './lib/modal/modal-descrizione.component';

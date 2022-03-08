@@ -1,60 +1,72 @@
-import {
-  HttpErrorResponse,
-  HttpEvent,
-  HttpHandler,
-  HttpInterceptor,
-  HttpRequest,
-  HttpResponse
-} from '@angular/common/http';
+import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse} from '@angular/common/http';
 import {Observable} from 'rxjs/internal/Observable';
-import {catchError, map} from 'rxjs/operators';
 import {LoadingService} from '../services/loading.service';
 import {Injectable} from '@angular/core';
-import {GlobalService} from "../services/global.service";
-import {of, throwError} from "rxjs";
 
 @Injectable({providedIn: 'root'})
 export class RequestInterceptor implements HttpInterceptor {
 
   constructor(
     private _loadingService: LoadingService,
-    private _globalService: GlobalService,
   ) {
   }
 
+  // pool of requests
+  private _requests: HttpRequest<any>[] = [];
+
+  /**
+   * Remove request from queue
+   * @param req
+   * @private
+   */
+  private _removeRequest(req: HttpRequest<any>) {
+    const i = this._requests.indexOf(req);
+    if (i >= 0) {
+      this._requests.splice(i, 1);
+    }
+    if (this._requests.length === 0) {
+      this._loadingService.isLoading.next(this._requests.length > 0);
+    }
+  }
+
+  /**
+   * HTTP Interceptor for manager loader
+   * @param req
+   * @param next
+   */
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
     if (req.headers.get('showLoader') !== 'false') {
-      // this._loadingService.present();
-      this._loadingService.setLoading(true, req.url);
+      this._requests.push(req);
+      if (this._requests.length === 1) {
+        this._loadingService.isLoading.next(true);
+      }
     }
 
-    return next.handle(req)
-      .pipe(
-        /*catchError((err) => {
-          this._loadingService.setLoading(false, req.url);
-          // this._loadingService.dismiss();
-          if (err.status === 410) {
-            if (this._globalService.logout()) {
-              window.location.reload();
+    return new Observable<HttpEvent<any>>(observer => {
+      const subscription = next.handle(req)
+        .subscribe(
+          event => {
+            if (event instanceof HttpResponse) {
+              this._removeRequest(req);
+              observer.next(event);
             }
-            return throwError(err);
-          }
-        }),*/
-        map<HttpEvent<any>, any>((evt: HttpEvent<any>) => {
-          /*if (evt instanceof HttpResponse) {
-              this._loadingService.dismiss();
-          }*/
-          if (evt instanceof HttpErrorResponse && evt.status === 410) {
-            if (this._globalService.logout()) {
-              window.location.reload();
-            }
-          }
-          if (evt instanceof HttpResponse && req.headers.get('showLoader') !== 'false') {
-            this._loadingService.setLoading(false, req.url);
-          }
-          return evt;
-        })
-      );
+          },
+          err => {
+            alert('error' + err);
+            this._removeRequest(req);
+            observer.error(err);
+          },
+          () => {
+            this._removeRequest(req);
+            observer.complete();
+          });
+      // remove request from queue when cancelled
+      return () => {
+        this._removeRequest(req);
+        subscription.unsubscribe();
+      };
+    });
+
   }
 }

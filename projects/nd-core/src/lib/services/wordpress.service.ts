@@ -66,7 +66,6 @@ export class WordpressService {
   }
 
   public modifyUser(id: number, params: boolean): Observable<any> {
-    console.log(id);
     return this._http.put(
       `${this._viewConfig.environment.apiGateway}/woocommerce/user/update/${id}`,
       {params},

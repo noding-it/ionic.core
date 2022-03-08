@@ -134,7 +134,6 @@ export class Sweetalert2Service {
             progressStepsDistance: '6px',
 
             preConfirm: () => {
-                console.log('prova');
                // this.sendRecord(0, 'email', 'cellulare');
             }
         });

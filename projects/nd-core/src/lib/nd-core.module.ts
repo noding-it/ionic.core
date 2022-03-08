@@ -11,6 +11,7 @@ import {IconPickerPopoverComponent} from "./popover/icon-picker-popover.componen
 import {ColorPickerModule} from "ngx-color-picker";
 import {PdfViewerModule} from "ng2-pdf-viewer";
 import {NgxColorsModule} from "ngx-colors";
+import {CustomLoaderController} from "./overlay/custom-loader.controller";
 
 @NgModule({
   declarations: [
@@ -27,6 +28,9 @@ import {NgxColorsModule} from "ngx-colors";
     ColorPickerModule,
     PdfViewerModule,
     NgxColorsModule
+  ],
+  providers: [
+    CustomLoaderController,
   ],
   exports: [
     ModalBaseCrudComponent,
