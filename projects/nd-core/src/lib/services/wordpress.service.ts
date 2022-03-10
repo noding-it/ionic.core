@@ -17,6 +17,12 @@ export class WordpressService {
   ) {
   }
 
+  private _customEndpoint = '';
+
+  public setCustomEndpoint(endpoint: string): void {
+    this._customEndpoint = endpoint + '/';
+  }
+
   public login(): Observable<any> {
     return this._http.post(
       this._viewConfig.environment.apiWpAuth,
@@ -44,7 +50,7 @@ export class WordpressService {
 
   public getUserOrders(): Observable<any> {
     return this._http.get(
-      `${this._viewConfig.environment.apiGateway}/woocommerce/anenglishisland/orders/get-by-user`,
+      `${this._viewConfig.environment.apiGateway}/woocommerce/${this._customEndpoint}orders/get-by-user`,
       {
         headers: new HttpHeaders().set('content-type', 'application/x-www-form-urlencoded').set('Authorization', `AEI ${localStorage.getItem('token')}`).set('Woocommerce', `${this._viewConfig.environment.WOOCOMMERCE_TOKEN}`)
       }
@@ -55,7 +61,7 @@ export class WordpressService {
 
   public createUser(params: object): Observable<any> {
     return this._http.post(
-      `${this._viewConfig.environment.apiGateway}/woocommerce/user/create`,
+      `${this._viewConfig.environment.apiGateway}/woocommerce/${this._customEndpoint}user/create`,
       {params},
       {
         headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', `AEI ${localStorage.getItem('token')}`).set('Woocommerce', `${this._viewConfig.environment.WOOCOMMERCE_TOKEN}`),
@@ -67,7 +73,7 @@ export class WordpressService {
 
   public modifyUser(id: number, params: boolean): Observable<any> {
     return this._http.put(
-      `${this._viewConfig.environment.apiGateway}/woocommerce/user/update/${id}`,
+      `${this._viewConfig.environment.apiGateway}/woocommerce/${this._customEndpoint}user/update/${id}`,
       {params},
       // action},
       {
@@ -80,7 +86,7 @@ export class WordpressService {
 
   public deleteUser(codiceUtente: number): Observable<any> {
     return this._http.delete(
-      `${this._viewConfig.environment.apiGateway}/woocommerce/user/delete/${codiceUtente}`,
+      `${this._viewConfig.environment.apiGateway}/woocommerce/${this._customEndpoint}user/delete/${codiceUtente}`,
       {
         headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', `AEI ${localStorage.getItem('token')}`).set('Woocommerce', `${this._viewConfig.environment.WOOCOMMERCE_TOKEN}`),
       }
@@ -91,7 +97,7 @@ export class WordpressService {
 
   public createProduct(params: object): Observable<any> {
     return this._http.post(
-      `${this._viewConfig.environment.apiGateway}/woocommerce/product/create`,
+      `${this._viewConfig.environment.apiGateway}/woocommerce/${this._customEndpoint}product/create`,
       {
         params,
       },
@@ -105,7 +111,7 @@ export class WordpressService {
 
   public updateProduct(params: object, codiceWordpress: number): Observable<any> {
     return this._http.put(
-      `${this._viewConfig.environment.apiGateway}/woocommerce/product/update/${codiceWordpress}`,
+      `${this._viewConfig.environment.apiGateway}/woocommerce/${this._customEndpoint}product/update/${codiceWordpress}`,
       {
         params,
         codiceWordpress
@@ -120,7 +126,7 @@ export class WordpressService {
 
   public getProdotti(): Observable<any> {
     return this._http.get(
-      `${this._viewConfig.environment.apiGateway}/woocommerce/products/get`,
+      `${this._viewConfig.environment.apiGateway}/woocommerce/${this._customEndpoint}products/get`,
       {
         headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', `AEI ${localStorage.getItem('token')}`).set('Woocommerce', `${this._viewConfig.environment.WOOCOMMERCE_TOKEN}`),
       }
@@ -131,7 +137,7 @@ export class WordpressService {
 
   public getProdotto(codiceWordpress: number): Observable<any> {
     return this._http.get(
-      `${this._viewConfig.environment.apiGateway}/woocommerce/product/get/${codiceWordpress}`,
+      `${this._viewConfig.environment.apiGateway}/woocommerce/${this._customEndpoint}product/get/${codiceWordpress}`,
       {
         headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', `AEI ${localStorage.getItem('token')}`).set('Woocommerce', `${this._viewConfig.environment.WOOCOMMERCE_TOKEN}`),
       }
@@ -142,7 +148,7 @@ export class WordpressService {
 
   public deleteProdotto(codiceWordpress: number): Observable<any> {
     return this._http.delete(
-      `${this._viewConfig.environment.apiGateway}/woocommerce/product/delete/${codiceWordpress}`,
+      `${this._viewConfig.environment.apiGateway}/woocommerce/${this._customEndpoint}product/delete/${codiceWordpress}`,
       {
         headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', `AEI ${localStorage.getItem('token')}`).set('Woocommerce', `${this._viewConfig.environment.WOOCOMMERCE_TOKEN}`),
       }
@@ -153,7 +159,7 @@ export class WordpressService {
 
   public createOrder(params: object): Observable<any> {
     return this._http.post(
-      `${this._viewConfig.environment.apiGateway}/woocommerce/order/create`,
+      `${this._viewConfig.environment.apiGateway}/woocommerce/${this._customEndpoint}order/create`,
       {
         params,
       },
@@ -167,7 +173,7 @@ export class WordpressService {
 
   public deleteOrdine(codiceOrdine: number): Observable<any> {
     return this._http.delete(
-      `${this._viewConfig.environment.apiGateway}/woocommerce/orders/delete/${codiceOrdine}`,
+      `${this._viewConfig.environment.apiGateway}/woocommerce/${this._customEndpoint}orders/delete/${codiceOrdine}`,
       {
         headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', `AEI ${localStorage.getItem('token')}`).set('Woocommerce', `${this._viewConfig.environment.WOOCOMMERCE_TOKEN}`),
       }
