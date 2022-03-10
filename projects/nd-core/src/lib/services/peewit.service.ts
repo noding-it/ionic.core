@@ -30,11 +30,11 @@ export class PeewitService {
     }
   }
 
-  edit(id: number, link: string): Observable<any> {
+  edit(id: number, link: string, short_link: string): Observable<any> {
     if (link && link.length > 0) {
       return this._httpClient.put<any>(
         `https://peew.it/v1/edit/${id}`,
-        {link},
+        {link, short_link},
         {
           headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', `Bearer ${this._viewConfig.environment.SHORTLINK_TOKEN}`)
         }

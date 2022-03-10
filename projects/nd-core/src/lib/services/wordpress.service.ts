@@ -20,7 +20,7 @@ export class WordpressService {
   private _customEndpoint = '';
 
   public setCustomEndpoint(endpoint: string): void {
-    this._customEndpoint = endpoint + '/';
+    this._customEndpoint = endpoint + (endpoint !== '' ? '/' : '');
   }
 
   public login(): Observable<any> {
