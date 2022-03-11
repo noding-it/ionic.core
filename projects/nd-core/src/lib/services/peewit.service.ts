@@ -62,4 +62,13 @@ export class PeewitService {
     );
   }
 
+  getStats(id: number, from_date: string = 'null', to_date: string = ''): Observable<any> {
+    return this._httpClient.get<any>(
+      `https://peew.it/v1/stats/${id}?from_date=${from_date}&to_date=${to_date}`,
+      {
+        headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', `Bearer ${this._viewConfig.environment.SHORTLINK_TOKEN}`)
+      }
+    );
+  }
+
 }
