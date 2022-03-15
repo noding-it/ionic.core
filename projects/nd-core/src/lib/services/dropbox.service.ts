@@ -5,11 +5,11 @@ import {Sweetalert2Service} from './sweetalert2.service';
 import {ModalService} from './modal.service';
 import {IGatewayResponse} from '../interfaces/gateway-response';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {ModalPreviewComponent} from "../modal/modal-preview.component";
-import {EnvironmentConfig} from "../interfaces/environment-config";
+import {ModalPreviewComponent} from '../modal/modal-preview.component';
+import {EnvironmentConfig} from '../interfaces/environment-config';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DropboxService {
 
@@ -42,7 +42,7 @@ export class DropboxService {
         headers: new HttpHeaders()
           .set('content-type', 'application/x-www-form-urlencoded')
           .set('authorization', `UpThere ${localStorage.getItem('token')}`)
-          .set('showLoader', 'false')
+          .set('showLoader', 'false'),
       });
   }
 
@@ -50,7 +50,7 @@ export class DropboxService {
     return this._http.get<IGatewayResponse>(
       `${this._viewConfig.environment.apiGateway}/storage/share/${path}`,
       {
-        headers: new HttpHeaders().set('content-type', 'application/x-www-form-urlencoded').set('authorization', `UpThere ${localStorage.getItem('token')}`)
+        headers: new HttpHeaders().set('content-type', 'application/x-www-form-urlencoded').set('authorization', `UpThere ${localStorage.getItem('token')}`),
       });
   }
 
@@ -59,17 +59,17 @@ export class DropboxService {
   }
 
   /*public download(id: string): Observable<any> {
-      // window.open(`${environment.apiDropbox}?gest=3&id=${id}`, '_blank');
-      return this._gs.callDownload(id);
-  }*/
+   // window.open(`${environment.apiDropbox}?gest=3&id=${id}`, '_blank');
+   return this._gs.callDownload(id);
+   }*/
 
   /*public thumbnail(object): Observable<any> {
-      return this._gs.callDropbox(object, false);
-  }*/
+   return this._gs.callDropbox(object, false);
+   }*/
 
-  public delete(object): Observable<any> {
+  public delete(object: { path: string, ext_id: number, ext_table: string }): Observable<any> {
     return this._http.delete<IGatewayResponse>(
-      `${this._viewConfig.environment.apiGateway}/storage/delete/${object.path}`,
+      `${this._viewConfig.environment.apiGateway}/storage/delete/${object.path}/${object.ext_id}/${object.ext_table}`,
       {
         headers: new HttpHeaders().set('content-type', 'application/x-www-form-urlencoded').set('authorization', `UpThere ${localStorage.getItem('token')}`)
       });
