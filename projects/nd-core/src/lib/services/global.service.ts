@@ -125,6 +125,25 @@ export class GlobalService {
     );
   }
 
+  public login4rya(accountID: string): Observable<any> {
+    if (!this.networkService.isOnline()) {
+      this._sweetAlert.warning('Il tuo dispositivo risulta essere OFFLINE !');
+    }
+    return this._http.post(
+      this._viewConfig.environment.apiAuth + '?gest=2&arya=1',
+      {
+        type: 1,
+        accountid: accountID,
+        token: this._viewConfig.environment.TOKEN
+      },
+      {
+        headers: new HttpHeaders().set('content-type', 'application/x-www-form-urlencoded')
+      }
+    ).pipe(
+      catchError(this.errorHandler)
+    );
+  }
+
   public getImpostazione(impostazioneID: number): string | undefined {
     if (this.App.settings.length > 0) {
       return this.App.settings.filter(imp => imp.id === impostazioneID)[0]?.valore;
