@@ -36,14 +36,16 @@ export class DropboxService {
   }
 
   public get(object): Observable<any> {
-    return this._http.get<IGatewayResponse>(
-      `${this._viewConfig.environment.apiGateway}/storage/get/${object.path}`,
-      {
-        headers: new HttpHeaders()
-          .set('content-type', 'application/x-www-form-urlencoded')
-          .set('authorization', `UpThere ${localStorage.getItem('token')}`)
-          .set('showLoader', 'false'),
-      });
+    if (object?.path) {
+      return this._http.get<IGatewayResponse>(
+        `${this._viewConfig.environment.apiGateway}/storage/get/${object.path}`,
+        {
+          headers: new HttpHeaders()
+            .set('content-type', 'application/x-www-form-urlencoded')
+            .set('authorization', `UpThere ${localStorage.getItem('token')}`)
+            .set('showLoader', 'false'),
+        });
+    }
   }
 
   public share(path): Observable<any> {
