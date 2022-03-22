@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
-import {AnimationController, ToastController} from '@ionic/angular';
-import {Router} from "@angular/router";
+import {AnimationController, IonicSafeString, ToastController} from '@ionic/angular';
+import {Router} from '@angular/router';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ToastService {
 
@@ -21,33 +21,33 @@ export class ToastService {
       text: 'Ricarica',
       handler: () => {
         window.location.reload();
-      }
+      },
     },
     {
       side: 'end',
       icon: '',
       text: 'OK',
       handler: () => {
-      }
+      },
     },
     {
       side: 'end',
       icon: 'web',
       text: 'Vai al sito',
       handler: () => {
-      }
-    }
+      },
+    },
   ];
 
   async present(message: string, duration: number = 5000) {
     const toast = await this._toast.create({
       message,
-      duration
+      duration,
     });
     toast.present();
   }
 
-  async presentWithAnimation(message: string, color: string = 'success', position: string = 'bottom', duration: number = 5000, routes?: string, cssClass?: string) {
+  async presentWithAnimation(message: string | { normal: string, underlined: string, normal2: string }, color: string = 'success', position: string = 'bottom', duration: number = 5000, routes?: string, cssClass: string = '') {
 
     const enterAnimation = (baseEl) => {
       const animation = this._animationController.create()
@@ -77,26 +77,45 @@ export class ToastService {
         .addAnimation(animation);
     };
 
-    const toast = await this._toast.create({
-      duration,
-//            animated: true,
-      color,
-      position: 'bottom',
-      enterAnimation,
-      leaveAnimation,
-      buttons: [
-        {
-          side: 'start',
-          text: `${message}`,
-          cssClass: `${(cssClass) ? cssClass : ''}`,
-          handler: () => {
-            if (routes) {
-              this._router.navigate([`${routes}`]);
-            }
-          },
-        }]
-    });
+    let toast;
+    if (typeof message === 'string') {
+      toast = await this._toast.create({
+        duration,
+        color,
+        position: 'bottom',
+        enterAnimation,
+        leaveAnimation,
+        buttons: [
+          {
+            side: 'start',
+            text: `${message}`,
+            cssClass: `${(cssClass) ? cssClass : ''}`,
+            handler: () => this.clickedToastButton(routes),
+          }],
+      });
+    } else {
+      toast = await this._toast.create({
+        duration,
+        color,
+        position: 'bottom',
+        enterAnimation,
+        leaveAnimation,
+        message: new IonicSafeString(`<ion-label class="${cssClass}" style="width: 100%; cursor: initial;font-size: medium;">${message.normal}<u style="padding: 0 5px 0 5px">${message.underlined}</u>${message.normal2}</ion-label>`),
+        buttons: [
+          {
+            side: 'end',
+            icon: 'arrow-forward-outline',
+            handler: () => this.clickedToastButton(routes),
+          }],
+      });
+    }
     await toast.present();
+  }
+
+  clickedToastButton(routes: string): void {
+    if (routes) {
+      this._router.navigate([`${routes}`]);
+    }
   }
 
   async notificationPresent(header: string, message: string, azione: number, url ?: string, color: string = 'warning', position: string = 'top', duration: number = 5000): Promise<void> {
@@ -109,9 +128,9 @@ export class ToastService {
       buttons: [
         azione === 3 ? {
           ...this._systemButtons[azione - 1],
-          handler: () => window.open(url, '_blank')
-        } : {...this._systemButtons[azione - 1]}
-      ]
+          handler: () => window.open(url, '_blank'),
+        } : {...this._systemButtons[azione - 1]},
+      ],
     });
     return toast.present();
   }
