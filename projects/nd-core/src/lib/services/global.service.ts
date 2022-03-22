@@ -130,7 +130,7 @@ export class GlobalService {
       this._sweetAlert.warning('Il tuo dispositivo risulta essere OFFLINE !');
     }
     return this._http.post(
-      this._viewConfig.environment.apiAuth + '?gest=2&arya=1',
+      this._viewConfig.environment.apiAuth + '&arya=1',
       {
         type: 1,
         accountid: accountID,
