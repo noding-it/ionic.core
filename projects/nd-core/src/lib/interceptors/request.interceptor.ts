@@ -53,7 +53,6 @@ export class RequestInterceptor implements HttpInterceptor {
             }
           },
           err => {
-            alert('error' + err);
             this._removeRequest(req);
             observer.error(err);
           },

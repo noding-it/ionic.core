@@ -39,7 +39,6 @@ export class QueueInterceptor implements HttpInterceptor {
             }
           },
           err => {
-            alert('error returned');
             this.removeRequest(req);
             observer.error(err);
           },
