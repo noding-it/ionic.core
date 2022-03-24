@@ -10,10 +10,10 @@ import {AppConfig} from '../interfaces/app';
 import {NetworkService} from './network.service';
 import {Sweetalert2Service} from './sweetalert2.service';
 import {Router} from '@angular/router';
-import {EnvironmentConfig} from "../interfaces/environment-config";
+import {EnvironmentConfig} from '../interfaces/environment-config';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GlobalService {
 
@@ -35,7 +35,7 @@ export class GlobalService {
     logged: true,
     settings: [],
     ruotes: [],
-    appPages: []
+    appPages: [],
   };
 
   //////////////////////// GLOBAL FUNCTION /////////////////////////
@@ -47,11 +47,11 @@ export class GlobalService {
         type: 1,
         process,
         params,
-        token: localStorage.getItem('token')
+        token: localStorage.getItem('token'),
       },
       {
-        headers: new HttpHeaders().set('content-type', 'application/json').set('authorization', this._viewConfig.environment.TOKEN).set('showLoader', (loader ? '' : 'false'))
-      }
+        headers: new HttpHeaders().set('content-type', 'application/json').set('authorization', this._viewConfig.environment.TOKEN).set('showLoader', (loader ? '' : 'false')),
+      },
     ).pipe(
       catchError(this.errorHandler),
       tap(resp => {
@@ -66,23 +66,32 @@ export class GlobalService {
     );
   }
 
-  public callMicroservice(uri: string, token?: string, loader = true, method: 'GET' | 'POST' = 'GET', params: any = null): Observable<any> {
+  /**
+   *
+   * @param uri = uri del microservizio => ${urlServizio}${uri}
+   * @param token = Bearer ${token} usato nell'headers come Authorization; se null => environment.TOKEN
+   * @param loader = 'showLoader'
+   * @param method = 'GET' | 'POST'; default 'GET'
+   * @param params = params per chiamate 'POST'
+   * @param url = usato al posto di environment.apiGateway
+   */
+  public callMicroservice(uri: string, token?: string, loader = true, method: 'GET' | 'POST' = 'GET', params: any = null, url?: string): Observable<any> {
     if (method === 'GET') {
       return this._http.get<any>(
-        `${this._viewConfig.environment.apiGateway}${uri}`,
+        `${url || this._viewConfig.environment.apiGateway}${uri}`,
         {
-          headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', (token ? `Bearer ${token}` : this._viewConfig.environment.TOKEN)).set('showLoader', 'false')
-        }
+          headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', (token ? `Bearer ${token}` : this._viewConfig.environment.TOKEN)).set('showLoader', (loader ? '' : 'false')),
+        },
       ).pipe(
         catchError(this.errorHandler),
       );
     } else {
       return this._http.post<any>(
-        `${this._viewConfig.environment.apiGateway}${uri}`,
+        `${url || this._viewConfig.environment.apiGateway}${uri}`,
         params,
         {
-          headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', (token ? `Bearer ${token}` : this._viewConfig.environment.TOKEN)).set('showLoader', 'false'),
-        }
+          headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', (token ? `Bearer ${token}` : this._viewConfig.environment.TOKEN)).set('showLoader', (loader ? '' : 'false')),
+        },
       ).pipe(
         catchError(this.errorHandler),
       );
@@ -115,13 +124,13 @@ export class GlobalService {
         type: 1,
         username,
         password,
-        token: this._viewConfig.environment.TOKEN
+        token: this._viewConfig.environment.TOKEN,
       },
       {
-        headers: new HttpHeaders().set('content-type', 'application/x-www-form-urlencoded')
-      }
+        headers: new HttpHeaders().set('content-type', 'application/x-www-form-urlencoded'),
+      },
     ).pipe(
-      catchError(this.errorHandler)
+      catchError(this.errorHandler),
     );
   }
 
@@ -134,13 +143,13 @@ export class GlobalService {
       {
         type: 1,
         accountid: accountID,
-        token: this._viewConfig.environment.TOKEN
+        token: this._viewConfig.environment.TOKEN,
       },
       {
-        headers: new HttpHeaders().set('content-type', 'application/x-www-form-urlencoded')
-      }
+        headers: new HttpHeaders().set('content-type', 'application/x-www-form-urlencoded'),
+      },
     ).pipe(
-      catchError(this.errorHandler)
+      catchError(this.errorHandler),
     );
   }
 
@@ -204,9 +213,9 @@ export class GlobalService {
                 url: `/${m.path_menu}`,
                 icon: m.icon,
                 color: m.color,
-                mobile: m.mobile
+                mobile: m.mobile,
               };
-            })
+            }),
         ];
 
         if (this.App.appPages.length > 0 && modules.recordset[0].hasOwnProperty('id_parent')) {
@@ -222,9 +231,9 @@ export class GlobalService {
                     url: `/${m.path_menu}`,
                     icon: m.icon,
                     color: m.color,
-                    mobile: m.mobile
+                    mobile: m.mobile,
                   };
-                })
+                }),
             ];
           }
         }
