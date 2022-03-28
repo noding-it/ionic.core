@@ -78,7 +78,7 @@ export class GlobalService {
   public callMicroservice(uri: string, token?: string, loader = true, method: 'GET' | 'POST' = 'GET', params: any = null, url?: string): Observable<any> {
     if (method === 'GET') {
       return this._http.get<any>(
-        `${url || this._viewConfig.environment.apiGateway}${uri}`,
+        `${(!this._viewConfig.environment.production && url) ? url : this._viewConfig.environment.apiGateway}${uri}`,
         {
           headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', (token ? `Bearer ${token}` : this._viewConfig.environment.TOKEN)).set('showLoader', (loader ? '' : 'false')),
         },
@@ -87,7 +87,7 @@ export class GlobalService {
       );
     } else {
       return this._http.post<any>(
-        `${url || this._viewConfig.environment.apiGateway}${uri}`,
+        `${(!this._viewConfig.environment.production && url) ? url : this._viewConfig.environment.apiGateway}${uri}`,
         params,
         {
           headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', (token ? `Bearer ${token}` : this._viewConfig.environment.TOKEN)).set('showLoader', (loader ? '' : 'false')),
