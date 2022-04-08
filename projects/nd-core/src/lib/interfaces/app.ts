@@ -73,7 +73,6 @@ export interface Utente {
   displayName: string;
   parentUsername?: string;
   percentualeProfilo?: number;
-  idStorageFirma?: string;
   '4rya': boolean;
   '4rya_id': string;
   '4rya_pk': string;

@@ -69,7 +69,7 @@ export class DropboxService {
    return this._gs.callDropbox(object, false);
    }*/
 
-  public delete(object: { path: string, ext_id: number, ext_table: string }): Observable<any> {
+  public delete(object: { path: string, ext_id: number | string, ext_table: string }): Observable<any> {
     return this._http.delete<IGatewayResponse>(
       `${this._viewConfig.environment.apiGateway}/storage/delete/${object.path}/${object.ext_id}/${object.ext_table}`,
       {
