@@ -22,5 +22,8 @@
     "ngx-colors": "^2.10.1",
     "sweetalert2": "^11.1.10",
     "xlsx": "^0.17.4"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.180"
   }
 }
