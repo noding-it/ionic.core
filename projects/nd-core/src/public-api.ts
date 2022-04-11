@@ -24,6 +24,7 @@ export * from './lib/popover/icon-picker-popover.component';
 
 export * from './lib/services/alert.service';
 export * from './lib/services/aruba.service';
+export * from './lib/services/browser.service';
 export * from './lib/services/chrome-extension.service';
 export * from './lib/services/dropbox.service';
 export * from './lib/services/edoco.service';
