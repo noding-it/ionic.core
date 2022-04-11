@@ -4,6 +4,8 @@ import {Sweetalert2Service} from './sweetalert2.service';
 import {ChromeExtensionService} from './chrome-extension.service';
 import {TranslateService} from '@ngx-translate/core';
 import {EnvironmentConfig} from '../interfaces/environment-config';
+import {ShimReferenceTagger} from '@angular/compiler-cli/src/ngtsc/shims';
+import {ToolService} from './tool.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +18,7 @@ export class BrowserService {
     private _sweetAlert: Sweetalert2Service,
     private _translateService: TranslateService,
     private _chromeExtension: ChromeExtensionService,
+    private _toolService: ToolService,
   ) {
   }
 
@@ -46,8 +49,7 @@ export class BrowserService {
         const version = config.substring(config.indexOf(search) + search.length, config.length).replace('version="', '').split('"')[0];
         console.log(version);
         if (currentVersion !== version) {
-          // TODO sistemare messaggio
-          const alertCheckVersion = this._sweetAlert.confirm(this._translateService.instant('Nuova versione!'), this._translateService.instant('Nuova versione!'));
+          const alertCheckVersion = this._sweetAlert.confirm(this._translateService.instant(`Nuova versione app`, {app: app.toUpperCase()}), this._translateService.instant('Nuova versione!'), this._translateService.instant('Aggiorna'), this._translateService.instant('Più tardi'));
           alertCheckVersion.then(async (result) => {
             if (result.isConfirmed) {
               const hasExtension = await this._chromeExtension.hasExtension(this._viewConfig.environment.CHROME_EXTENSION_ID);
@@ -56,7 +58,11 @@ export class BrowserService {
                 await this._chromeExtension.clearCache(this._viewConfig.environment.CHROME_EXTENSION_ID);
                 window.location.reload();
               } else {
-                // TODO installa la nostra estensione bla bla bla
+                this._sweetAlert.confirm('Migliora la tua esperienza utilizzando la nostra estensione', 'Nuova estensione disponibile', 'Scarica ora', 'Più tardi').then(res => {
+                  if (res.isConfirmed && !!link) {
+                    this._toolService.linkNavigateTo(link, '_blank');
+                  }
+                });
               }
             }
           });
