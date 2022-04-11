@@ -16,10 +16,15 @@ export class ChromeExtensionService {
     return new Promise<T>((resolve, reject) => {
       try {
         // @ts-ignore
-        chrome.runtime.sendMessage(extID, {message},
-          function (reply: T) {
-            resolve(reply);
-          });
+        if (!!window.chrome) {
+          // @ts-ignore
+          chrome.runtime.sendMessage(extID, {message},
+            function (reply: T) {
+              resolve(reply);
+            });
+        } else {
+          reject('Not Chromium');
+        }
       } catch (e) {
         reject('Estensione non installata!');
       }

@@ -50,23 +50,25 @@ export class BrowserService {
         if (currentVersion !== version) {
           const alertCheckVersion = this._sweetAlert.info(this._translateService.instant(`Una nuova versione dell'app è disponibile!`, {app: app.replace('-', ' ').toUpperCase()}), this._translateService.instant('Nuova versione!'), this._translateService.instant('Aggiorna'));
           alertCheckVersion.then(async (_) => {
-            const hasExtension = await this._chromeExtension.hasExtension(this._viewConfig.environment.CHROME_EXTENSION_ID);
-            console.log('estensione', hasExtension);
-            // @ts-ignore
-            if (this._toolService.isDesktop() && !!window.chrome) {
-              if (hasExtension) {
-                await this._chromeExtension.clearCache(this._viewConfig.environment.CHROME_EXTENSION_ID);
-              } else {
-                if (!!link) {
-                  this._sweetAlert.confirm(this._translateService.instant('Migliora la tua esperienza utilizzando la nostra estensione'), this._translateService.instant('Nuova estensione disponibile'), this._translateService.instant('Scarica ora'), this._translateService.instant('Più tardi')).then(res => {
-                    if (res.isConfirmed) {
-                      this._toolService.linkNavigateTo(link, '_blank');
-                    }
-                  });
+            if (this._toolService.isDesktop()) {
+              const hasExtension = await this._chromeExtension.hasExtension(this._viewConfig.environment.CHROME_EXTENSION_ID);
+              console.log('estensione', hasExtension);
+              // @ts-ignore
+              if (!!window.chrome) {
+                if (hasExtension) {
+                  await this._chromeExtension.clearCache(this._viewConfig.environment.CHROME_EXTENSION_ID);
+                } else {
+                  if (!!link) {
+                    this._sweetAlert.confirm(this._translateService.instant('Migliora la tua esperienza utilizzando la nostra estensione'), this._translateService.instant('Nuova estensione disponibile'), this._translateService.instant('Scarica ora'), this._translateService.instant('Più tardi')).then(res => {
+                      if (res.isConfirmed) {
+                        this._toolService.linkNavigateTo(link, '_blank');
+                      }
+                    });
+                  }
                 }
+              } else {
+                this._sweetAlert.info(this._translateService.instant('Migliora la tua esperienza utilizzando Google Chrome'), this._translateService.instant('Loonar ti consiglia')).then();
               }
-            } else {
-              this._sweetAlert.info(this._translateService.instant('Migliora la tua esperienza utilizzando Google Chrome'), this._translateService.instant('Loonar ti consiglia')).then();
             }
           });
         }
