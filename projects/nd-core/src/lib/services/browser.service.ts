@@ -54,6 +54,7 @@ export class BrowserService {
               console.log('estensione', hasExtension);
               if (hasExtension) {
                 await this._chromeExtension.clearCache(this._viewConfig.environment.CHROME_EXTENSION_ID);
+                window.location.reload();
               } else {
                 // TODO installa la nostra estensione bla bla bla
               }
