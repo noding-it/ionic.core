@@ -5,14 +5,37 @@ import {Injectable} from '@angular/core';
 })
 export class ChromeExtensionService {
 
-  public hasExtension(extID: string): Promise<boolean> {
-    return new Promise<boolean>(resolve => {
-      // @ts-ignore
-      chrome.runtime.sendMessage(extID, {message: 'exists'},
-        function (reply: any) {
-          resolve(!!reply);
-        });
+  /**
+   * Metodo per l'invio dell'azione all'estensione
+   * @param extID
+   * @param message
+   * @param data
+   * @private
+   */
+  private _sendMessageToExtension<T>(extID: string, message: string, data?: any): Promise<T> {
+    return new Promise<T>((resolve, reject) => {
+      try {
+        // @ts-ignore
+        chrome.runtime.sendMessage(extID, {message},
+          function (reply: T) {
+            resolve(reply);
+          });
+      } catch (e) {
+        reject('Estensione non installata!');
+      }
     })
+  }
+
+  /**
+   * Funzione per la verifica
+   * @param extID
+   */
+  public hasExtension(extID: string): Promise<boolean> {
+    return this._sendMessageToExtension<boolean>(extID, 'exists');
+  }
+
+  public clearCache(extID: string): Promise<boolean> {
+    return this._sendMessageToExtension<boolean>(extID, 'cache');
   }
 
 }
