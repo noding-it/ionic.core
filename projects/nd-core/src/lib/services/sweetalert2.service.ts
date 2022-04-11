@@ -52,12 +52,12 @@ export class Sweetalert2Service {
         });
     }
 
-    info(text: string, title?: string) {
-        Swal.fire({
+    info(text: string, title?: string, buttonConfirm?: string) {
+        return Swal.fire({
             title,
             text,
             icon: 'info',
-            confirmButtonText: 'Ok',
+            confirmButtonText: buttonConfirm || 'Ok',
             showClass: {
                 popup: 'animate__animated animate__bounceInUp'
             },
@@ -67,6 +67,14 @@ export class Sweetalert2Service {
         });
     }
 
+  /**
+   *
+   * @param text
+   * @param title
+   * @param buttonConfirm
+   * @param buttonCancel
+   * @param icon SweetAlertIcon = 'success' | 'error' | 'warning' | 'info' | 'question'
+   */
     confirm(text: string, title?: string, buttonConfirm?: string, buttonCancel?: string, icon?: SweetAlertIcon) {
         return Swal.fire({
             title,
