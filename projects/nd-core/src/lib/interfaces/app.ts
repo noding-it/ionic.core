@@ -56,15 +56,14 @@ export interface Utente {
   id_acquirente?: number;
   //
   id_cliente?: number;
-  id_fornitore?: number;
-  id_agente?: number;
   nomeCliente?: string;
+  id_fornitore?: number;
   nomeFornitore?: string;
+  id_agente?: number;
   nomeAgente?: string;
   dataRegistrazione?: string;
   nomeUtente?: string;
   link?: string;
-  propicIdStorage?: string; // TODO valutare se deprecare
   propicLink?: string;
   urlFirma?: string;
   referralLink?: string;

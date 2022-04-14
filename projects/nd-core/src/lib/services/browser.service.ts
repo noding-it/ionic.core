@@ -27,7 +27,7 @@ export class BrowserService {
    * @param app
    * @param link Link dell'estensione allo store
    */
-  public getAppVersion(app: string, link?: string) {
+  public getAppVersion(app: string, link = 'https://chrome.google.com/webstore/detail/myvirtualab-chromium-tool/mgflnancoccobpfodoimfkihhihlhlni?hl=it&authuser=0') {
     if (!isDevMode()) {
       let currentVersion = null;
       if (localStorage.getItem('mvl')) {
