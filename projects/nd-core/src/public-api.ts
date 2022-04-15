@@ -9,6 +9,7 @@ export * from './lib/directives/file-drag-and-drop.directive';
 
 export * from './lib/guards/auth.guard';
 export * from './lib/guards/admin.guard';
+export * from './lib/guards/login.guard';
 export * from './lib/guards/route-check.guard';
 
 export * from './lib/interceptors/error.interceptor';
