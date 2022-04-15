@@ -67,7 +67,7 @@ export class BrowserService {
                   }
                 }
               } else {
-                this._sweetAlert.info(this._translateService.instant('Migliora la tua esperienza utilizzando Google Chrome'), this._translateService.instant('Loonar ti consiglia')).then();
+                this._sweetAlert.info(this._translateService.instant('Migliora la tua esperienza utilizzando Google Chrome'), this._translateService.instant(`L'app ti consiglia`, {app: app.replace('-', ' ').toUpperCase()})).then();
               }
             }
           });
