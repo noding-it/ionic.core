@@ -25,7 +25,7 @@ export class RequestInterceptor implements HttpInterceptor {
       this._requests.splice(i, 1);
     }
     if (this._requests.length === 0) {
-      this._loadingService.isLoading.next(this._requests.length > 0);
+      this._loadingService.isLoading.next(false);
     }
   }
 
@@ -39,7 +39,7 @@ export class RequestInterceptor implements HttpInterceptor {
     if (req.headers.get('showLoader') !== 'false') {
       this._requests.push(req);
       if (this._requests.length === 1) {
-        // this._loadingService.isLoading.next(true);
+        this._loadingService.isLoading.next(true);
       }
     }
 
