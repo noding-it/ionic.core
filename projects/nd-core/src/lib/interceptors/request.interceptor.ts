@@ -37,10 +37,10 @@ export class RequestInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
     if (req.headers.get('showLoader') !== 'false') {
-      this._requests.push(req);
+      /*this._requests.push(req);
       if (this._requests.length === 1) {
         this._loadingService.isLoading.next(true);
-      }
+      }*/
     }
 
     return new Observable<HttpEvent<any>>(observer => {
