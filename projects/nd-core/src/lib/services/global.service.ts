@@ -40,7 +40,7 @@ export class GlobalService {
 
   //////////////////////// GLOBAL FUNCTION /////////////////////////
 
-  public callGateway(process, params, loader = true, gtw = 'apiDBox', loaderDuration = 1000): Observable<IGatewayResponse> {
+  public callGateway(process, params, loader = false, gtw = 'apiDBox', loaderDuration = 1000): Observable<IGatewayResponse> {
     return this._http.post<IGatewayResponse>(
       this._viewConfig.environment[gtw] + '?gest=2',
       {
@@ -75,7 +75,7 @@ export class GlobalService {
    * @param params = params per chiamate 'POST'
    * @param url = usato al posto di environment.apiGateway
    */
-  public callMicroservice(uri: string, token?: string, loader = true, method: 'GET' | 'POST' = 'GET', params: any = null, url?: string): Observable<any> {
+  public callMicroservice(uri: string, token?: string, loader = false, method: 'GET' | 'POST' = 'GET', params: any = null, url?: string): Observable<any> {
     if (method === 'GET') {
       return this._http.get<any>(
         `${(!this._viewConfig.environment.production && url) ? url : this._viewConfig.environment.apiGateway}${uri}`,
