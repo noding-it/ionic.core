@@ -51,10 +51,10 @@ export class BrowserService {
           const alertCheckVersion = this._sweetAlert.info(this._translateService.instant(`Una nuova versione dell'app è disponibile!`, {app: app.replace('-', ' ').toUpperCase()}), this._translateService.instant('Nuova versione!'), this._translateService.instant('Aggiorna'));
           alertCheckVersion.then(async (_) => {
             if (this._toolService.isDesktop()) {
-              const hasExtension = await this._chromeExtension.hasExtension(this._viewConfig.environment.CHROME_EXTENSION_ID);
-              console.log('estensione', hasExtension);
               // @ts-ignore
               if (!!window.chrome) {
+                const hasExtension = await this._chromeExtension.hasExtension(this._viewConfig.environment.CHROME_EXTENSION_ID);
+                console.log('estensione', hasExtension);
                 if (hasExtension) {
                   await this._chromeExtension.clearCache(this._viewConfig.environment.CHROME_EXTENSION_ID);
                 } else {
