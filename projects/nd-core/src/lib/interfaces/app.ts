@@ -40,6 +40,7 @@ export interface Ruote {
 }
 
 export interface Utente {
+  id_people: number;
   cod_u: number;
   username: string;
   email: string;
@@ -56,6 +57,7 @@ export interface Utente {
   statodescrizione?: string;
   id_acquirente?: number;
   //
+  id_dipendente?: number;
   id_cliente?: number;
   nomeCliente?: string;
   id_fornitore?: number;
