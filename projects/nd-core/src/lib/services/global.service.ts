@@ -214,6 +214,7 @@ export class GlobalService {
                 icon: m.icon,
                 color: m.color,
                 mobile: m.mobile,
+                open: false
               };
             }),
         ];
@@ -232,6 +233,7 @@ export class GlobalService {
                     icon: m.icon,
                     color: m.color,
                     mobile: m.mobile,
+                    open: false
                   };
                 }),
             ];

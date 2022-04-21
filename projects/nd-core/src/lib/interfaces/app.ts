@@ -15,6 +15,7 @@ export interface Modulo {
   color: string;
   mobile: boolean;
   subMenu: Modulo[];
+  open: boolean;
 }
 
 export interface Impostazione {
