@@ -3,8 +3,6 @@ import {GlobalService} from './global.service';
 import {Observable} from 'rxjs';
 import {EnvironmentConfig} from "../interfaces/environment-config";
 import {ToolService} from "./tool.service";
-import {HttpHeaders} from "@angular/common/http";
-import {catchError} from "rxjs/operators";
 import {Sweetalert2Service} from "./sweetalert2.service";
 
 export enum AryaActions {
