@@ -10,6 +10,7 @@ export class PeewitService {
 
   private _url: string;
   private _ext_id: string | number;
+  private _ext_table: string;
 
   constructor(
     @Inject('CORE_ENVIRONMENT') private _viewConfig: EnvironmentConfig,
@@ -25,6 +26,10 @@ export class PeewitService {
     this._ext_id = ext_id;
   }
 
+  set ext_table(ext_table: string) {
+    this._ext_table = ext_table;
+  }
+
   generate(link: string): Observable<any> {
     if (link && link.length > 0) {
       return this._httpClient.post<any>(
@@ -36,7 +41,8 @@ export class PeewitService {
           headers: new HttpHeaders()
             .set('content-type', 'application/json')
             .set('Authorization', `Bearer ${this._viewConfig.environment.SHORTLINK_TOKEN}`)
-            .set('X-AUTH-TOKEN', `Bearer ${this._ext_id}`),
+            .set('X-AUTH-TOKEN', `Bearer ${this._ext_id}`)
+            .set('Y-AUTH-TOKEN', `Bearer ${this._ext_table}`),
         },
       );
     } else {
@@ -53,7 +59,8 @@ export class PeewitService {
           headers: new HttpHeaders()
             .set('content-type', 'application/json')
             .set('Authorization', `Bearer ${this._viewConfig.environment.SHORTLINK_TOKEN}`)
-            .set('X-AUTH-TOKEN', `Bearer ${this._ext_id}`),
+            .set('X-AUTH-TOKEN', `Bearer ${this._ext_id}`)
+            .set('Y-AUTH-TOKEN', `Bearer ${this._ext_table}`),
         },
       );
     } else {
@@ -68,7 +75,8 @@ export class PeewitService {
         headers: new HttpHeaders()
           .set('content-type', 'application/json')
           .set('Authorization', `Bearer ${this._viewConfig.environment.SHORTLINK_TOKEN}`)
-          .set('X-AUTH-TOKEN', `Bearer ${this._ext_id}`),
+          .set('X-AUTH-TOKEN', `Bearer ${this._ext_id}`)
+          .set('Y-AUTH-TOKEN', `Bearer ${this._ext_table}`),
       },
     );
   }
@@ -80,7 +88,8 @@ export class PeewitService {
         headers: new HttpHeaders()
           .set('content-type', 'application/json')
           .set('Authorization', `Bearer ${this._viewConfig.environment.SHORTLINK_TOKEN}`)
-          .set('X-AUTH-TOKEN', `Bearer ${this._ext_id}`),
+          .set('X-AUTH-TOKEN', `Bearer ${this._ext_id}`)
+          .set('Y-AUTH-TOKEN', `Bearer ${this._ext_table}`),
       },
     );
   }
@@ -92,7 +101,8 @@ export class PeewitService {
         headers: new HttpHeaders()
           .set('content-type', 'application/json')
           .set('Authorization', `Bearer ${this._viewConfig.environment.SHORTLINK_TOKEN}`)
-          .set('X-AUTH-TOKEN', `Bearer ${this._ext_id}`),
+          .set('X-AUTH-TOKEN', `Bearer ${this._ext_id}`)
+          .set('Y-AUTH-TOKEN', `Bearer ${this._ext_table}`),
       },
     );
   }
