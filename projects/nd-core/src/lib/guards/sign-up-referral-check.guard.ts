@@ -19,8 +19,17 @@ export class SignUpReferralCheckGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
 
-    const param = this._route.snapshot.paramMap.get('signup');
-    console.log(param);
-    return this._gs.callMicroservice(`/public/validator/validator_existing_referral/${param}`, null, false, 'GET');
+    const param = localStorage.getItem('signup-referral');
+    if (!param) {
+      this._router.navigate(['/login']).then();
+      return true;
+    } else {
+      this._gs.callMicroservice(`/public/validator/validator_existing_referral/${param}`, null, false, 'GET').subscribe(data => {
+        if (data.invalid) {
+          this._router.navigate(['/login']).then();
+        }
+        return true;
+      });
+    }
   }
 }
