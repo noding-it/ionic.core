@@ -4,14 +4,14 @@ import {Observable} from 'rxjs';
 import {GlobalService} from '../services/global.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SignUpReferralCheckGuard implements CanActivate {
 
   constructor(
     private _gs: GlobalService,
     private _router: Router,
-    private _route: ActivatedRoute
+    private _route: ActivatedRoute,
   ) {
   }
 
@@ -20,16 +20,14 @@ export class SignUpReferralCheckGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
 
     const param = localStorage.getItem('signup-referral');
-    if (!param) {
-      this._router.navigate(['/login']).then();
-      return true;
-    } else {
+    if (param) {
       this._gs.callMicroservice(`/public/validator/validator_existing_referral/${param}`, null, false, 'GET').subscribe(data => {
         if (data.invalid) {
-          this._router.navigate(['/login']).then();
+          localStorage.removeItem('signup-referral');
+          window.location.reload();
         }
-        return true;
       });
     }
+    return true;
   }
 }
