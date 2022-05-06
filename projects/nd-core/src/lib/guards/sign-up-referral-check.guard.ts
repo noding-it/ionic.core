@@ -22,6 +22,10 @@ export class SignUpReferralCheckGuard implements CanActivate {
     const param = localStorage.getItem('signup-referral');
     if (param) {
       this._gs.callMicroservice(`/public/validator/validator_existing_referral/${param}`, null, false, 'GET').subscribe(data => {
+        if (data.hasOwnProperty('error')) {
+          console.error(data.error);
+          return false;
+        }
         if (data.invalid) {
           localStorage.removeItem('signup-referral');
           window.location.reload();
