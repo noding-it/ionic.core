@@ -1,12 +1,16 @@
 import {Inject, Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Observable, of} from "rxjs";
-import {EnvironmentConfig} from "../interfaces/environment-config";
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Observable, of} from 'rxjs';
+import {EnvironmentConfig} from '../interfaces/environment-config';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PeewitService {
+
+  private _url: string;
+  private _ext_id: string | number;
+  private _ext_table: string;
 
   constructor(
     @Inject('CORE_ENVIRONMENT') private _viewConfig: EnvironmentConfig,
@@ -14,16 +18,32 @@ export class PeewitService {
   ) {
   }
 
+  set url(url: string) {
+    this._url = url;
+  }
+
+  set ext_id(ext_id: string | number) {
+    this._ext_id = ext_id;
+  }
+
+  set ext_table(ext_table: string) {
+    this._ext_table = ext_table;
+  }
+
   generate(link: string): Observable<any> {
     if (link && link.length > 0) {
       return this._httpClient.post<any>(
-        `https://peew.it/v1/generate`,
+        `${this._url || 'https://peew.it'}/links/v1/generate`,
         {
-          link
+          link,
         },
         {
-          headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', `Bearer ${this._viewConfig.environment.SHORTLINK_TOKEN}`)
-        }
+          headers: new HttpHeaders()
+            .set('content-type', 'application/json')
+            .set('Authorization', `Bearer ${this._viewConfig.environment.SHORTLINK_TOKEN}`)
+            .set('X-AUTH-TOKEN', `Bearer ${this._ext_id}`)
+            .set('Y-AUTH-TOKEN', `Bearer ${this._ext_table}`),
+        },
       );
     } else {
       return of(null);
@@ -33,11 +53,15 @@ export class PeewitService {
   edit(id: number, link: string, short_link: string): Observable<any> {
     if (link && link.length > 0) {
       return this._httpClient.put<any>(
-        `https://peew.it/v1/edit/${id}`,
+        `${this._url || 'https://peew.it'}/links/v1/edit/${id}`,
         {link, short_link},
         {
-          headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', `Bearer ${this._viewConfig.environment.SHORTLINK_TOKEN}`)
-        }
+          headers: new HttpHeaders()
+            .set('content-type', 'application/json')
+            .set('Authorization', `Bearer ${this._viewConfig.environment.SHORTLINK_TOKEN}`)
+            .set('X-AUTH-TOKEN', `Bearer ${this._ext_id}`)
+            .set('Y-AUTH-TOKEN', `Bearer ${this._ext_table}`),
+        },
       );
     } else {
       return of(null);
@@ -46,28 +70,40 @@ export class PeewitService {
 
   list(): Observable<any> {
     return this._httpClient.get<any>(
-      `https://peew.it/v1/list`,
+      `${this._url || 'https://peew.it'}/links/v1/list`,
       {
-        headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', `Bearer ${this._viewConfig.environment.SHORTLINK_TOKEN}`)
-      }
+        headers: new HttpHeaders()
+          .set('content-type', 'application/json')
+          .set('Authorization', `Bearer ${this._viewConfig.environment.SHORTLINK_TOKEN}`)
+          .set('X-AUTH-TOKEN', `Bearer ${this._ext_id}`)
+          .set('Y-AUTH-TOKEN', `Bearer ${this._ext_table}`),
+      },
     );
   }
 
   delete(id: number): Observable<any> {
     return this._httpClient.delete<any>(
-      `https://peew.it/v1/delete/${id}`,
+      `${this._url || 'https://peew.it'}/links/v1/delete/${id}`,
       {
-        headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', `Bearer ${this._viewConfig.environment.SHORTLINK_TOKEN}`)
-      }
+        headers: new HttpHeaders()
+          .set('content-type', 'application/json')
+          .set('Authorization', `Bearer ${this._viewConfig.environment.SHORTLINK_TOKEN}`)
+          .set('X-AUTH-TOKEN', `Bearer ${this._ext_id}`)
+          .set('Y-AUTH-TOKEN', `Bearer ${this._ext_table}`),
+      },
     );
   }
 
   getStats(id: number, from_date: string = 'null', to_date: string = ''): Observable<any> {
     return this._httpClient.get<any>(
-      `https://peew.it/v1/stats/${id}?from_date=${from_date}&to_date=${to_date}`,
+      `${this._url || 'https://peew.it'}/links/v1/stats/${id}?from_date=${from_date}&to_date=${to_date}`,
       {
-        headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', `Bearer ${this._viewConfig.environment.SHORTLINK_TOKEN}`)
-      }
+        headers: new HttpHeaders()
+          .set('content-type', 'application/json')
+          .set('Authorization', `Bearer ${this._viewConfig.environment.SHORTLINK_TOKEN}`)
+          .set('X-AUTH-TOKEN', `Bearer ${this._ext_id}`)
+          .set('Y-AUTH-TOKEN', `Bearer ${this._ext_table}`),
+      },
     );
   }
 
