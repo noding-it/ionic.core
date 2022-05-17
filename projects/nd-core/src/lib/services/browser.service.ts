@@ -47,7 +47,7 @@ export class BrowserService {
         const search = `id="io.ionic.${app}" `;
         const version = config.substring(config.indexOf(search) + search.length, config.length).replace('version="', '').split('"')[0];
         console.log(version);
-        if (currentVersion !== version) {
+        if (currentVersion && currentVersion !== version) {
           const alertCheckVersion = this._sweetAlert.info(this._translateService.instant(`Una nuova versione dell'app è disponibile!`, {app: app.replace('-', ' ').toUpperCase()}), this._translateService.instant('Nuova versione!'), this._translateService.instant('Aggiorna'));
           alertCheckVersion.then(async (_) => {
             if (this._toolService.isDesktop()) {
