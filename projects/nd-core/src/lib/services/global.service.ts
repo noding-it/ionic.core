@@ -211,8 +211,7 @@ export class GlobalService {
                 id: m.id,
                 title: m.title,
                 url: `/${m.path_menu}`,
-                ionic_icon: m.ionic_icon,
-                fa_icon: m.fa_icon,
+                icon: m.ionic_icon,
                 color: m.color,
                 mobile: m.mobile,
                 open: false
@@ -231,8 +230,7 @@ export class GlobalService {
                     id: m.id,
                     title: m.title,
                     url: `/${m.path_menu}`,
-                    ionic_icon: m.ionic_icon,
-                    fa_icon: m.fa_icon,
+                    icon: m.ionic_icon,
                     color: m.color,
                     mobile: m.mobile,
                     open: false

@@ -11,8 +11,7 @@ export interface Modulo {
   id: number;
   title: string;
   url: string;
-  ionic_icon: string;
-  fa_icon: string;
+  icon: string;
   color: string;
   mobile: boolean;
   subMenu: Modulo[];
