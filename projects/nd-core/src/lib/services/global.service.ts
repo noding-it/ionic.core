@@ -56,6 +56,7 @@ export class GlobalService {
       catchError(this.errorHandler),
       tap(resp => {
         if (resp.error === 'Invalid token 4 !') {
+          delete resp.error;
           if (this.logout()) {
             window.location.reload();
           }
