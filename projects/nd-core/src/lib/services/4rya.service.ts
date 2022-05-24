@@ -28,9 +28,9 @@ export class AryaService {
    * @param aryaID
    * @param gatewayUrl = usato al posto di environment.apiGateway
    */
-  public update4ryaID(aryaID: string, gatewayUrl: string): Observable<any> {
+  public update4ryaID(aryaID: string): Observable<any> {
     /*return this._gs.callGateway('Worx1sPzYhyh/h+S02GPikq6p3ev7Aq6zvfd4FRt38stWy0tSVYtWy2PKRmY1Mk/nnZIT0MAKvy29PNTPQ7XjJVefIrKOIkiXw@@', `'${localStorage.getItem('token')}','${aryaID}'`, false);*/
-    return this._gs.callMicroservice(`/trinci/arya/user/${aryaID}`, localStorage.getItem('token'), false, 'PUT', {}, gatewayUrl);
+    return this._gs.callMicroservice(`/trinci/arya/user/${aryaID}`, localStorage.getItem('token'), false, 'PUT');
   }
 
   public open4ryaModal(aryaKey: string, lang: string, application: string, action: string, token: string): void {
