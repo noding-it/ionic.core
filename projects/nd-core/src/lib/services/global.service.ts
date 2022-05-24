@@ -74,28 +74,20 @@ export class GlobalService {
    * @param loader = 'showLoader'
    * @param method = 'GET' | 'POST'; default 'GET'
    * @param params = params per chiamate 'POST'
-   * @param url = usato al posto di environment.apiGateway
+   * @param gatewayUrl = usato al posto di environment.apiGateway
    */
-  public callMicroservice(uri: string, token?: string, loader = false, method: 'GET' | 'POST' = 'GET', params: any = null, url?: string): Observable<any> {
-    if (method === 'GET') {
-      return this._http.get<any>(
-        `${(!this._viewConfig.environment.production && url) ? url : this._viewConfig.environment.apiGateway}${uri}`,
-        {
-          headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', (token ? `Bearer ${token}` : this._viewConfig.environment.TOKEN)).set('showLoader', (loader ? '' : 'false')),
-        },
-      ).pipe(
-        catchError(this.errorHandler),
-      );
-    } else {
-      return this._http.post<any>(
-        `${(!this._viewConfig.environment.production && url) ? url : this._viewConfig.environment.apiGateway}${uri}`,
-        params,
-        {
-          headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', (token ? `Bearer ${token}` : this._viewConfig.environment.TOKEN)).set('showLoader', (loader ? '' : 'false')),
-        },
-      ).pipe(
-        catchError(this.errorHandler),
-      );
+  public callMicroservice(uri: string, token?: string, loader = false, method: 'GET' | 'POST' | 'PUT' = 'GET', params: any = null, gatewayUrl?: string): Observable<any> {
+    const headers = new HttpHeaders().set('content-type', 'application/json').set('Authorization', (token ? `Bearer ${token}` : this._viewConfig.environment.TOKEN)).set('showLoader', (loader ? '' : 'false'));
+    const url = `${(!this._viewConfig.environment.production && gatewayUrl) ? gatewayUrl : this._viewConfig.environment.apiGateway}${uri}`;
+    switch (method) {
+      case 'GET':
+        return this._http.get<any>(url, {headers}).pipe(catchError(this.errorHandler));
+      case 'POST':
+        return this._http.post<any>(url, params, {headers}).pipe(catchError(this.errorHandler));
+      case 'PUT':
+        return this._http.put<any>(url, params, {headers}).pipe(catchError(this.errorHandler));
+      default:
+        throw Error('Method not allowed!');
     }
   }
 
@@ -215,7 +207,7 @@ export class GlobalService {
                 icon: m.ionic_icon,
                 color: m.color,
                 mobile: m.mobile,
-                open: false
+                open: false,
               };
             }),
         ];
@@ -234,7 +226,7 @@ export class GlobalService {
                     icon: m.ionic_icon,
                     color: m.color,
                     mobile: m.mobile,
-                    open: false
+                    open: false,
                   };
                 }),
             ];
