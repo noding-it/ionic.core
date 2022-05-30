@@ -1,6 +1,6 @@
 {
   "name": "@noding.ionic/core",
-  "version": "0.1.92",
+  "version": "0.1.93",
   "scripts": {
     "i:force": "npm i --force"
   },
@@ -10,9 +10,9 @@
   "peerDependencies": {
     "@angular/common": "~13.0.0",
     "@angular/core": "~13.0.0",
-    "@ionic-native/device": "^5.36.0",
     "@ionic-native/file": "^5.36.0",
     "@ionic-native/file-opener": "^5.36.0",
+    "@ngx-translate/core": "^14.0.0",
     "autolinker": "^3.14.3",
     "color": "^4.0.1",
     "file-saver": "^2.0.5",
@@ -20,7 +20,6 @@
     "ng2-pdf-viewer": "^7.0.2",
     "ngx-color-picker": "^11.0.0",
     "ngx-colors": "^2.10.1",
-    "@ngx-translate/core": "^14.0.0",
     "sweetalert2": "^11.1.10",
     "xlsx": "^0.17.4"
   }

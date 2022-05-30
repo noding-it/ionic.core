@@ -4,7 +4,6 @@ import {throwError} from 'rxjs';
 import {Observable} from 'rxjs/internal/Observable';
 import {catchError, tap} from 'rxjs/operators';
 import {Platform} from '@ionic/angular';
-import {Device} from '@ionic-native/device/ngx';
 import {IGatewayResponse} from '../interfaces/gateway-response';
 import {AppConfig} from '../interfaces/app';
 import {NetworkService} from './network.service';
@@ -21,7 +20,6 @@ export class GlobalService {
     @Inject('CORE_ENVIRONMENT') private _viewConfig: EnvironmentConfig,
     private _http: HttpClient,
     public platform: Platform,
-    public device: Device,
     public networkService: NetworkService,
     private _sweetAlert: Sweetalert2Service,
     private _router: Router,
