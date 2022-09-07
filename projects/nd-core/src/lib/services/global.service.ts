@@ -42,13 +42,13 @@ export class GlobalService {
     return this._http.post<IGatewayResponse>(
       this._viewConfig.environment[gtw] + '?gest=2',
       {
-        type: 1,
         process,
         params,
-        token: localStorage.getItem('token'),
       },
       {
-        headers: new HttpHeaders().set('content-type', 'application/json').set('authorization', this._viewConfig.environment.TOKEN).set('showLoader', (loader ? '' : 'false')),
+        headers: new HttpHeaders().set('content-type', 'application/json')
+          .set('authorization', `Bearer ${localStorage.getItem('token')}`)
+          .set('showLoader', (loader ? '' : 'false')),
       },
     ).pipe(
       catchError(this.errorHandler),

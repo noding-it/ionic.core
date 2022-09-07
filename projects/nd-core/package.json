@@ -1,6 +1,6 @@
 {
   "name": "@noding.ionic/core",
-  "version": "0.1.95",
+  "version": "0.1.97",
   "scripts": {
     "i:force": "npm i --force"
   },
@@ -20,7 +20,7 @@
     "ng2-pdf-viewer": "^7.0.2",
     "ngx-color-picker": "^11.0.0",
     "ngx-colors": "^2.10.1",
-    "sweetalert2": "^11.1.10",
+    "sweetalert2": "^11.4.24",
     "xlsx": "^0.17.4"
   }
 }
