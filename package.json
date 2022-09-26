@@ -11,8 +11,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "adduser": "npm adduser --registry http://192.168.121.52:4873",
-    "nd:core:build": "ng build nd-core --configuration production",
-    "nd:core:publish": "cd dist/nd-core && npm publish --registry http://192.168.121.52:4873"
+    "core:build": "ng build nd-core --configuration production",
+    "core:publish": "cd dist/nd-core && npm publish --registry http://192.168.121.52:4873"
   },
   "private": true,
   "dependencies": {

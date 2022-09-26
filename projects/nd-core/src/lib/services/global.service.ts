@@ -71,19 +71,22 @@ export class GlobalService {
    * @param token = Bearer ${token} usato nell'headers come Authorization; se null => environment.TOKEN
    * @param loader = 'showLoader'
    * @param method = 'GET' | 'POST'; default 'GET'
-   * @param params = params per chiamate 'POST'
+   * @param params = params per chiamate 'POST' o 'PUT'
+   * @param requestOptions = options che se viene passato sovrascrive quella default
    * @param gatewayUrl = usato al posto di environment.apiGateway
    */
-  public callMicroservice(uri: string, token?: string, loader = false, method: 'GET' | 'POST' | 'PUT' = 'GET', params: any = null, gatewayUrl?: string): Observable<any> {
+  public callMicroservice(uri: string, token?: string, loader = false, method: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET', params: any = null, requestOptions?: any, gatewayUrl?: string): Observable<any> {
     const headers = new HttpHeaders().set('content-type', 'application/json').set('Authorization', (token ? `Bearer ${token}` : this._viewConfig.environment.TOKEN)).set('showLoader', (loader ? '' : 'false'));
     const url = `${(!this._viewConfig.environment.production && gatewayUrl) ? gatewayUrl : this._viewConfig.environment.apiGateway}${uri}`;
     switch (method) {
       case 'GET':
-        return this._http.get<any>(url, {headers}).pipe(catchError(this.errorHandler));
+        return this._http.get<any>(url, {headers, ...requestOptions}).pipe(catchError(this.errorHandler));
       case 'POST':
         return this._http.post<any>(url, params, {headers}).pipe(catchError(this.errorHandler));
       case 'PUT':
         return this._http.put<any>(url, params, {headers}).pipe(catchError(this.errorHandler));
+      case 'DELETE':
+        return this._http.delete<any>(url,{headers}).pipe(catchError(this.errorHandler));
       default:
         throw Error('Method not allowed!');
     }
