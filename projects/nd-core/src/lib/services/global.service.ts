@@ -52,7 +52,7 @@ export class GlobalService {
       },
     ).pipe(
       catchError(this.errorHandler),
-      tap(resp => {
+      /*tap(resp => {
         if (resp.error === 'Invalid token 4 !') {
           delete resp.error;
           if (this.logout()) {
@@ -61,7 +61,7 @@ export class GlobalService {
         } else if (resp.error === 'Invalid token 2 !') {
           delete resp.error;
         }
-      }),
+      }),*/
     );
   }
 
