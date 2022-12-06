@@ -45,8 +45,8 @@ export class ModalService {
             showBackdrop,
             backdropDismiss,
             cssClass,
-            enterAnimation,
-            leaveAnimation,
+            /*enterAnimation,
+            leaveAnimation,*/
         });
 
         await modal.present().then(() => this._active = true);

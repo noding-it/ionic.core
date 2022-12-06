@@ -13,6 +13,7 @@ export class Sweetalert2Service {
             text,
             icon: 'error',
             showClass: {
+
                 popup: 'animate__animated animate__bounceInUp'
             },
             hideClass: {
@@ -124,6 +125,7 @@ export class Sweetalert2Service {
             inputAttributes: {
                 autocapitalize: 'off'
             },
+            reverseButtons: true,
             cancelButtonText: koText,
             showCancelButton: true,
             confirmButtonText: okText,

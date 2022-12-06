@@ -4,7 +4,6 @@ import {throwError} from 'rxjs';
 import {Observable} from 'rxjs/internal/Observable';
 import {catchError, tap} from 'rxjs/operators';
 import {Platform} from '@ionic/angular';
-import {Device} from '@ionic-native/device/ngx';
 import {IGatewayResponse} from '../interfaces/gateway-response';
 import {AppConfig} from '../interfaces/app';
 import {NetworkService} from './network.service';
@@ -21,7 +20,6 @@ export class GlobalService {
     @Inject('CORE_ENVIRONMENT') private _viewConfig: EnvironmentConfig,
     private _http: HttpClient,
     public platform: Platform,
-    public device: Device,
     public networkService: NetworkService,
     private _sweetAlert: Sweetalert2Service,
     private _router: Router,
@@ -44,25 +42,26 @@ export class GlobalService {
     return this._http.post<IGatewayResponse>(
       this._viewConfig.environment[gtw] + '?gest=2',
       {
-        type: 1,
         process,
         params,
-        token: localStorage.getItem('token'),
       },
       {
-        headers: new HttpHeaders().set('content-type', 'application/json').set('authorization', this._viewConfig.environment.TOKEN).set('showLoader', (loader ? '' : 'false')),
+        headers: new HttpHeaders().set('content-type', 'application/json')
+          .set('authorization', `Bearer ${localStorage.getItem('token')}`)
+          .set('showLoader', (loader ? '' : 'false')),
       },
     ).pipe(
       catchError(this.errorHandler),
-      tap(resp => {
+      /*tap(resp => {
         if (resp.error === 'Invalid token 4 !') {
+          delete resp.error;
           if (this.logout()) {
             window.location.reload();
           }
         } else if (resp.error === 'Invalid token 2 !') {
           delete resp.error;
         }
-      }),
+      }),*/
     );
   }
 
@@ -72,29 +71,24 @@ export class GlobalService {
    * @param token = Bearer ${token} usato nell'headers come Authorization; se null => environment.TOKEN
    * @param loader = 'showLoader'
    * @param method = 'GET' | 'POST'; default 'GET'
-   * @param params = params per chiamate 'POST'
-   * @param url = usato al posto di environment.apiGateway
+   * @param params = params per chiamate 'POST' o 'PUT'
+   * @param requestOptions = options che se viene passato sovrascrive quella default
+   * @param gatewayUrl = usato al posto di environment.apiGateway
    */
-  public callMicroservice(uri: string, token?: string, loader = false, method: 'GET' | 'POST' = 'GET', params: any = null, url?: string): Observable<any> {
-    if (method === 'GET') {
-      return this._http.get<any>(
-        `${(!this._viewConfig.environment.production && url) ? url : this._viewConfig.environment.apiGateway}${uri}`,
-        {
-          headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', (token ? `Bearer ${token}` : this._viewConfig.environment.TOKEN)).set('showLoader', (loader ? '' : 'false')),
-        },
-      ).pipe(
-        catchError(this.errorHandler),
-      );
-    } else {
-      return this._http.post<any>(
-        `${(!this._viewConfig.environment.production && url) ? url : this._viewConfig.environment.apiGateway}${uri}`,
-        params,
-        {
-          headers: new HttpHeaders().set('content-type', 'application/json').set('Authorization', (token ? `Bearer ${token}` : this._viewConfig.environment.TOKEN)).set('showLoader', (loader ? '' : 'false')),
-        },
-      ).pipe(
-        catchError(this.errorHandler),
-      );
+  public callMicroservice(uri: string, token?: string, loader = false, method: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET', params: any = null, requestOptions?: any, gatewayUrl?: string): Observable<any> {
+    const headers = new HttpHeaders().set('content-type', 'application/json').set('Authorization', (token ? `Bearer ${token}` : this._viewConfig.environment.TOKEN)).set('showLoader', (loader ? '' : 'false'));
+    const url = `${(!this._viewConfig.environment.production && gatewayUrl) ? gatewayUrl : this._viewConfig.environment.apiGateway}${uri}`;
+    switch (method) {
+      case 'GET':
+        return this._http.get<any>(url, {headers, ...requestOptions}).pipe(catchError(this.errorHandler));
+      case 'POST':
+        return this._http.post<any>(url, params, {headers}).pipe(catchError(this.errorHandler));
+      case 'PUT':
+        return this._http.put<any>(url, params, {headers}).pipe(catchError(this.errorHandler));
+      case 'DELETE':
+        return this._http.delete<any>(url,{headers}).pipe(catchError(this.errorHandler));
+      default:
+        throw Error('Method not allowed!');
     }
   }
 
@@ -211,10 +205,10 @@ export class GlobalService {
                 id: m.id,
                 title: m.title,
                 url: `/${m.path_menu}`,
-                icon: m.icon,
+                icon: m.ionic_icon,
                 color: m.color,
                 mobile: m.mobile,
-                open: false
+                open: false,
               };
             }),
         ];
@@ -230,10 +224,10 @@ export class GlobalService {
                     id: m.id,
                     title: m.title,
                     url: `/${m.path_menu}`,
-                    icon: m.icon,
+                    icon: m.ionic_icon,
                     color: m.color,
                     mobile: m.mobile,
-                    open: false
+                    open: false,
                   };
                 }),
             ];
