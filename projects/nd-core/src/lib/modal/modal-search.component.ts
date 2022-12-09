@@ -1,10 +1,10 @@
 import {AfterViewInit, Component} from '@angular/core';
 import {NavParams} from '@ionic/angular';
-import {GlobalService} from '../services/global.service';
+import {GlobalService} from '@myvirtualab.angular/core';
 import {ModalService} from '../services/modal.service';
 import {SearchConfig} from '../interfaces/search-config';
-import {ToolService} from '../services/tool.service';
-import {Sweetalert2Service} from '../services/sweetalert2.service';
+import {ToolService} from '@myvirtualab.angular/core';
+import {Sweetalert2Service} from '@myvirtualab.angular/core';
 
 // @ts-ignore
 @Component({

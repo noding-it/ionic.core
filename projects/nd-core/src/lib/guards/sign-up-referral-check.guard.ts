@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router, ActivatedRoute} from '@angular/router';
 import {Observable} from 'rxjs';
-import {GlobalService} from '../services/global.service';
+import {GlobalService} from '@myvirtualab.angular/core';
 
 @Injectable({
   providedIn: 'root',

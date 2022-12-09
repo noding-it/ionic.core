@@ -1,10 +1,10 @@
 import {AfterViewInit, ChangeDetectorRef, Component} from '@angular/core';
 import {NavParams} from '@ionic/angular';
 import {ModalService} from '../services/modal.service';
-import {GlobalService} from '../services/global.service';
+import {GlobalService} from '@myvirtualab.angular/core';
 import {AlertService} from '../services/alert.service';
 import {TabellaDiBase} from '../interfaces/tabella-di-base';
-import {Sweetalert2Service} from '../services/sweetalert2.service';
+import {Sweetalert2Service} from '@myvirtualab.angular/core';
 import {BaseCrudConfig} from '../interfaces/base-crud-config';
 import {PopoverService} from '../services/popover.service';
 import {IconPickerPopoverComponent} from '../popover/icon-picker-popover.component';
@@ -210,7 +210,7 @@ export class ModalBaseCrudComponent implements AfterViewInit {
     const alertElimina = this._sweetAlert.confirm(`Sicuro di voler eliminare il record ?`);
     alertElimina.then(result => {
       if (result.isConfirmed) {
-        this._gs.callGateway(this.modalConfig.deleteProcess, item.id).subscribe(data => {
+        this._gs.callGateway(this.modalConfig.deleteProcess, `'${item.id}'`).subscribe(data => {
           if (data.hasOwnProperty('error')) {
             this._sweetAlert.error(data.error);
             return;

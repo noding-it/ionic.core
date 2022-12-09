@@ -37,7 +37,8 @@ import {CustomLoaderController} from "./overlay/custom-loader.controller";
     ModalDescrizioneComponent,
     ModalSearchComponent,
     ModalPreviewComponent,
-    IconPickerPopoverComponent
+    IconPickerPopoverComponent,
+
   ]
 })
 export class NdCoreModule {
