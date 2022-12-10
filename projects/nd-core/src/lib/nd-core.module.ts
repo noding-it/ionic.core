@@ -27,7 +27,7 @@ import {CustomLoaderController} from "./overlay/custom-loader.controller";
     FormsModule,
     ColorPickerModule,
     PdfViewerModule,
-    NgxColorsModule
+    NgxColorsModule,
   ],
   providers: [
     CustomLoaderController,
@@ -38,7 +38,6 @@ import {CustomLoaderController} from "./overlay/custom-loader.controller";
     ModalSearchComponent,
     ModalPreviewComponent,
     IconPickerPopoverComponent,
-
   ]
 })
 export class NdCoreModule {
@@ -55,4 +54,12 @@ export class NdCoreModule {
       providers: [{provide: 'CORE_ENVIRONMENT', useValue: environment}]
     };
   }
+
+  public static forChild(environment: EnvironmentConfig): ModuleWithProviders<NdCoreModule> {
+    return {
+      ngModule: NdCoreModule,
+      providers: [{provide: 'CORE_ENVIRONMENT', useValue: environment}]
+    };
+  }
+
 }

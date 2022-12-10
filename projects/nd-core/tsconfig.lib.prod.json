@@ -8,5 +8,8 @@
   "angularCompilerOptions": {
     "enableIvy": true,
     "compilationMode": "partial"
-  }
+  },
+  "bundledDependencies": [
+    "@myvirtualab.angular/core"
+  ]
 }
