@@ -3,8 +3,5 @@
   "dest": "../../dist/nd-core",
   "lib": {
     "entryFile": "src/public-api.ts"
-  },
-  "allowedNonPeerDependencies": [
-    "@myvirtualab.angular/core"
-  ]
+  }
 }
