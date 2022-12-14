@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router, ActivatedRoute} from '@angular/router';
+import {ActivatedRouteSnapshot, RouterStateSnapshot, Router, ActivatedRoute, CanActivate} from '@angular/router';
 import {Observable} from 'rxjs';
 import {GlobalService} from '@myvirtualab.angular/core';
 
@@ -17,7 +17,7 @@ export class SignUpReferralCheckGuard implements CanActivate {
 
   canActivate(
     next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+    state: RouterStateSnapshot): Promise<boolean> | boolean {
 
     const param = localStorage.getItem('signup-referral');
     if (param) {
