@@ -22,3 +22,4 @@ export * from './lib/services/modal-base.service';
 export * from './lib/services/popover.service';
 export * from './lib/services/qr-code.service';
 export * from './lib/services/toast.service';
+export * from './lib/services/tool.service';
