@@ -21,3 +21,11 @@ prepare project
 | `npm run release:patch` | create a newer patch release based on current and update CHANGELOG.md |
 | `npm run release:minor` | create a newer minor release based on current and update CHANGELOG.md |
 | `npm run release:major` | create a newer major release based on current and update CHANGELOG.md |
+
+## commit standards
+
+commits must have this format
+
+```
+feat(new-feature): add a new-feature to our project
+```
