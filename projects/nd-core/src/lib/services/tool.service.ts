@@ -8,13 +8,32 @@ import {Sweetalert2Service, ToolService as CoreToolService} from "@myvirtualab.a
 @Injectable({
   providedIn: 'root'
 })
-export class IonToolService extends CoreToolService {
+export class ToolService extends CoreToolService{
 
   constructor(
-    private _platform: Platform,
-    private _sweetalert: Sweetalert2Service
+     public _platform: Platform,
+      _sweetAlert: Sweetalert2Service
   ) {
-   super(_sweetalert)
+    super(_sweetAlert)
   }
+
+
+
+  public isIOS(): boolean {
+    return this._platform.is('ios') || this._platform.is('ipad') || this._platform.is('iphone');
+  }
+
+  public isDesktop(): boolean {
+    return this._platform.is('desktop');
+  }
+
+  public isTablet(): boolean {
+    return this._platform.is('tablet') && !this._platform.is('desktop');
+  }
+
+  public isDesktopOrTablet(): boolean {
+    return this._platform.is('desktop') || this._platform.is('tablet');
+  }
+
 
 }
