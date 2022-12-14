@@ -3,16 +3,16 @@ import {Platform} from '@ionic/angular';
 import {Observable} from 'rxjs/internal/Observable';
 import {of} from 'rxjs';
 import * as FileSaver from 'file-saver';
-import {Sweetalert2Service, ToolService as CoreToolService} from "@myvirtualab.angular/core";
+import {Sweetalert2Service, ToolService} from "@myvirtualab.angular/core";
 
 @Injectable({
   providedIn: 'root'
 })
-export class ToolService extends CoreToolService{
+export class IonicCoreToolService extends ToolService {
 
   constructor(
      public _platform: Platform,
-      _sweetAlert: Sweetalert2Service
+     _sweetAlert: Sweetalert2Service
   ) {
     super(_sweetAlert)
   }
