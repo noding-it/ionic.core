@@ -13,7 +13,7 @@
     "@angular/core": "~14.1.0",
     "@ionic-native/file": "^5.36.0",
     "@ionic-native/file-opener": "^5.36.0",
-    "@myvirtualab.angular/core": "^0.7.1",
+    "@myvirtualab.angular/core": "^0.31.0",
     "@ngx-translate/core": "~14.0.0",
     "autolinker": "^3.14.3",
     "color": "^4.0.1",
