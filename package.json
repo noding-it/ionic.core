@@ -1,6 +1,6 @@
 {
   "name": "ionic.core",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Ionic Framework",
   "homepage": "https://ionicframework.com/",
   "scripts": {
@@ -10,9 +10,15 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "adduser": "npm adduser --registry http://192.168.121.52:4873",
     "core:build": "ng build nd-core --configuration production",
-    "core:publish": "cd dist/nd-core && npm publish --registry http://192.168.121.52:4873"
+    "core:dev": "ng build nd-core --configuration production --watch",
+    "core:publish": "cd dist/nd-core && npm publish --registry http://31.44.121.233:4873",
+    "prepare": "husky install",
+    "commit": "cz",
+    "release:lib": "cd projects/nd-core && npm run release",
+    "release:patch" : "cd projects/nd-core && npm run release -- --release-as patch",
+    "release:minor" : "cd projects/nd-core && npm run release -- --release-as minor",
+    "release:major" : "cd projects/nd-core && npm run release -- --release-as major"
   },
   "private": true,
   "dependencies": {
@@ -23,7 +29,7 @@
     "@angular/platform-browser-dynamic": "^14.1.0",
     "@angular/router": "^14.1.0",
     "@ionic/angular": "^6.1.15",
-    "rxjs": "~6.6.0",
+    "rxjs": "^7.6.0",
     "tslib": "~2.3.1",
     "zone.js": "~0.11.4"
   },
@@ -37,21 +43,27 @@
     "@angular/compiler": "^14.1.0",
     "@angular/compiler-cli": "^14.1.0",
     "@angular/language-service": "^14.1.0",
+    "@commitlint/cli": "^17.3.0",
+    "@commitlint/config-conventional": "^17.3.0",
     "@ionic-native/device": "^5.36.0",
     "@ionic-native/file": "^5.36.0",
     "@ionic-native/file-opener": "^5.36.0",
     "@ionic/angular-toolkit": "~5.0.3",
+    "@ngx-translate/core": "^14.0.0",
     "@types/jasmine": "~3.6.0",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "^12.11.1",
     "@typescript-eslint/eslint-plugin": "4.16.1",
     "@typescript-eslint/parser": "4.16.1",
     "autolinker": "^3.14.3",
+    "commitizen": "^4.2.6",
+    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^7.6.0",
     "eslint-plugin-import": "2.22.1",
     "eslint-plugin-jsdoc": "30.7.6",
     "eslint-plugin-prefer-arrow": "1.2.2",
     "file-saver": "^2.0.5",
+    "husky": "^8.0.2",
     "jasmine-core": "~3.8.0",
     "jasmine-spec-reporter": "~5.0.0",
     "karma": "~6.3.2",
@@ -71,5 +83,10 @@
     "typescript": "~4.7.4",
     "xlsx": "^0.17.4"
   },
-  "description": "An Ionic project"
+  "description": "An Ionic project",
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
 }

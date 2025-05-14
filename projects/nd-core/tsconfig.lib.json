@@ -16,5 +16,8 @@
   "exclude": [
     "src/test.ts",
     "**/*.spec.ts"
+  ],
+  "bundledDependencies": [
+    "@myvirtualab.angular/core"
   ]
 }

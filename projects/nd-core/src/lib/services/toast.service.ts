@@ -1,3 +1,5 @@
+
+
 import {Injectable} from '@angular/core';
 import {AnimationController, IonicSafeString, ToastController} from '@ionic/angular';
 import {Router} from '@angular/router';
@@ -135,5 +137,3 @@ export class ToastService {
     return toast.present();
   }
 }
-
-
