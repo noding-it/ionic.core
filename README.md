@@ -3,7 +3,7 @@
 ## Getting Started
 Before starting your project you must install the dependencies
 
-`npm i --force`
+`npm i`
 
 prepare project
 
